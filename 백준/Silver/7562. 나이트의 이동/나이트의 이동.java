@@ -62,9 +62,10 @@ public class Main {
 
     private static void GoKnight(Point currentKnight, Point afterKnight, int l, Queue<Point> queue) {
         BFS(currentKnight, afterKnight, l, queue);
-        //DFS(currentKnight, afterKnight, l);
     }
 
+    private static int[] dx = {-2, -2, -1, -1, +1, +1, +2, +2};
+    private static int[] dy = {-1, +1, -2, +2, -2, +2, -1, +1};
 
     private static void BFS(Point currentKnight, Point afterKnight, int l, Queue<Point> queue) {
         visited[currentKnight.x][currentKnight.y] = true;
@@ -112,126 +113,18 @@ public class Main {
                0 <= x + 2, y + 1 <= l - 1
                : 0 <= x <= l - 3, 0 <= y <= l - 2
             * */
-
-
-            if (2 <= x && x <= l - 1 && 1 <= y && y <= l - 1) {
-                if (!visited[x - 2][y - 1]) {
-                    visited[x - 2][y - 1] = true;
-                    childNum++;
-                    queue.add(new Point(x - 2, y - 1));
+           
+            for (int i = 0; i < dx.length; i++) {
+                int afterX = x + dx[i];
+                int afterY = y + dy[i];
+                if (0 <= afterX && afterX <= l - 1 && 0 <= afterY && afterY <= l - 1) {
+                    if (!visited[afterX][afterY]) {
+                        visited[afterX][afterY] = true;
+                        childNum++;
+                        queue.add(new Point(afterX, afterY));
+                    }
                 }
             }
-            if (2 <= x && x <= l - 1 && 0 <= y && y <= l - 2) {
-                if (!visited[x - 2][y + 1]) {
-                    visited[x - 2][y + 1] = true;
-                    childNum++;
-                    queue.add(new Point(x - 2, y + 1));
-                }
-            }
-            if (1 <= x && x <= l - 1 && 2 <= y && y <= l - 1) {
-                if (!visited[x - 1][y - 2]) {
-                    visited[x - 1][y - 2] = true;
-                    childNum++;
-                    queue.add(new Point(x - 1, y - 2));
-                }
-            }
-            if (1 <= x && x <= l - 1 && 0 <= y && y <= l - 3) {
-                if (!visited[x - 1][y + 2]) {
-                    visited[x - 1][y + 2] = true;
-                    childNum++;
-                    queue.add(new Point(x - 1, y + 2));
-                }
-            }
-
-            if (0 <= x && x <= l - 2 && 2 <= y && y <= l - 1) {
-                if (!visited[x + 1][y - 2]) {
-                    visited[x + 1][y - 2] = true;
-                    childNum++;
-                    queue.add(new Point(x + 1, y - 2));
-                }
-            }
-            if (0 <= x && x <= l - 2 && 0 <= y && y <= l - 3) {
-                if (!visited[x + 1][y + 2]) {
-                    visited[x + 1][y + 2] = true;
-                    childNum++;
-                    queue.add(new Point(x + 1, y + 2));
-                }
-            }
-            if (0 <= x && x <= l - 3 && 1 <= y && y <= l - 1) {
-                if (!visited[x + 2][y - 1]) {
-                    visited[x + 2][y - 1] = true;
-                    childNum++;
-                    queue.add(new Point(x + 2, y - 1));
-                }
-            }
-            if (0 <= x && x <= l - 3 && 0 <= y && y <= l - 2) {
-                if (!visited[x + 2][y + 1]) {
-                    visited[x + 2][y + 1] = true;
-                    childNum++;
-                    queue.add(new Point(x + 2, y + 1));
-                }
-            }
-        }
-    }
-    private static void DFS(Point currentKnight, Point afterKnight, int l) {
-        int x = currentKnight.x;
-        int y = currentKnight.y;
-        visited[x][y] = true;
-
-        if (x == afterKnight.x && y == afterKnight.y) {
-            return;
-        }
-
-        if (2 <= x && x <= l - 1 && 1 <= y && y <= l - 1) {
-            visited[x - 2][y - 1] = true;
-            depth++;
-            currentKnight.x = x - 2;
-            currentKnight.y = y - 1;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (2 <= x && x <= l - 1 && 0 <= y && y <= l - 2) {
-            visited[x - 2][y + 1] = true;
-            depth++;
-            currentKnight.x = x - 2;
-            currentKnight.y = y = 1;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (1 <= x && x <= l - 1 && 2 <= y && y <= l - 1) {
-            visited[x - 1][y - 2] = true;
-            currentKnight.x = x - 1;
-            currentKnight.y = y - 2;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (1 <= x && x <= l - 1 && 0 <= y && y <= l - 3) {
-            visited[x - 1][y + 2] = true;
-            currentKnight.x = x - 1;
-            currentKnight.y = y + 2;
-            DFS(currentKnight, afterKnight, l);
-        }
-
-        if (0 <= x && x <= l - 2 && 2 <= y && y <= l - 1) {
-            visited[x + 1][y - 2] = true;
-            currentKnight.x = x + 1;
-            currentKnight.y = y - 2;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (0 <= x && x <= l - 2 && 0 <= y && y <= l - 3) {
-            visited[x + 1][y + 2] = true;
-            currentKnight.x = x + 1;
-            currentKnight.y = y - 2;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (0 <= x && x <= l - 3 && 1 <= y && y <= l - 1) {
-            visited[x + 2][y - 1] = true;
-            currentKnight.x = x + 2;
-            currentKnight.y = y - 1;
-            DFS(currentKnight, afterKnight, l);
-        }
-        if (0 <= x && x <= l - 3 && 0 <= y && y <= l - 2) {
-            visited[x + 2][y + 1] = true;
-            currentKnight.x = x + 2;
-            currentKnight.y = y + 1;
-            DFS(currentKnight, afterKnight, l);
         }
     }
 }

@@ -44,8 +44,6 @@ class Vertex{
 }
 
 public class Main {
-    private static boolean[] visited;
-    private static String[] color;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -59,11 +57,6 @@ public class Main {
             int E = Integer.parseInt(st.nextToken());
 
             // 무방향 그래프
-            visited = new boolean[V + 1];
-            color = new String[V + 1];
-            Arrays.fill(color, "none");
-            Arrays.fill(visited, false);
-
             // 두번째 시도: 인접 리스트
             ArrayList<Vertex> graphList = new ArrayList<>();
             graphList.add(new Vertex());
@@ -83,9 +76,10 @@ public class Main {
 
             // BFS로 시도 -> 같은 점 방문하면 NO로
 
-             for (int j = 1; j <= V; j++) {
+            /*1.전체 vertex 순환 -> none 검사*/
+            for (int j = 1; j <= V; j++) {
                 if (graphList.get(j).getColor().equals("none")) {
-                    BFS(graphList, j,0,V,E);
+                    BFS(graphList, j, V);
                 }
                 if (!isBi) {
                     break;
@@ -98,6 +92,7 @@ public class Main {
             }
             else{
                 bw.write("NO\n");
+                /*3. isBi 초기화*/
                 isBi = true;
             }
         }
@@ -108,7 +103,8 @@ public class Main {
     }
 
     private static boolean isBi = true;
-    private static void BFS(ArrayList<Vertex> graphList, int start, int depth, int V, int E) {
+    private static void BFS(ArrayList<Vertex> graphList, int start, int V) {
+        /*2. queue 지역변수로 -> 테스트케이스 때문*/
         Queue<Vertex> bfsQueue = new LinkedList<>();
         Vertex startVertex = graphList.get(start);
         startVertex.setColor("blue");
@@ -118,25 +114,33 @@ public class Main {
         while (!bfsQueue.isEmpty()) {
             Vertex pollVertex = bfsQueue.poll();
 
-            for (int end: pollVertex.endVertex) {
-                
-                if (graphList.get(end).getColor().equals(pollVertex.getColor())) {
+            for (int endElement: pollVertex.endVertex) {
+                graphList.get(endElement);
+                int nextDepth = pollVertex.getDepth() + 1;
+
+                if (graphList.get(endElement).getColor().equals(pollVertex.getColor())) {
                     isBi = false;
                     return;
                 }
-                
-                
-                if (graphList.get(end).getColor().equals("none")) {
-                    bfsQueue.add(graphList.get(end));
+
+                /*4. none인것만 queue에 담음*/
+                if (graphList.get(endElement).color.equals("none")) {
+                    bfsQueue.add(graphList.get(endElement));
                 }
 
-
-                if (pollVertex.getColor().equals("red") && graphList.get(end).getColor().equals("none")) {
-                    graphList.get(end).setColor("blue");
-                } else if (pollVertex.getColor().equals("blue") && graphList.get(end).getColor().equals("none")){
-                    graphList.get(end).setColor("red");
+                if (nextDepth % 2 != 0) { // 홀수면 red
+                    graphList.get(endElement).setColor("red");
+                    graphList.get(endElement).setDepth(nextDepth);
+                } else { // 짝수면 blue
+                    graphList.get(endElement).setColor("blue");
+                    graphList.get(endElement).setDepth(nextDepth);
                 }
             }
         }
     }
 }
+
+/*잘못된거는 없는데,
+* 1. none인것만 queue에 담기
+* 2. vertex를 돌면서 none인것 확인
+* 3. queue는 지역변수로 -> 테스트케이스 때문*/

@@ -34,26 +34,28 @@ public class Main {
                 r++;
             }
         }
-        while (l <= mid) { // 오른쪽이 먼저 채워줬을경우
-            // 왼쪽거 중 남은거를 다 채워줌.
-            sorted[index] = A[l];
-            index++;
-            l++;
-        }
+
         while (r <= right) { // 왼쪽이 먼저 참.
             // 오른쪽 거 중 남은거를 채워줌.
             sorted[index] = A[r];
             index++;
             r++;
         }
-
+        while (l <= mid) { // 오른쪽이 먼저 채워줬을경우
+            // 왼쪽거 중 남은거를 다 채워줌.
+            sorted[index] = A[l];
+            index++;
+            l++;
+        }
         // 정렬된 새배열을 기존의 배열에 복사해서 옮겨줌.
-        for (int i = left; i <= right; i++) {
-            A[i] = sorted[i];
-                saveCount++;
+        l = left;
+        while (l <= right) {
+            A[l] = sorted[l];
+            saveCount++;
             if (saveCount == K) {
-                saveNum = sorted[i];
+                saveNum = sorted[l];
             }
+            l++;
         }
     }
 

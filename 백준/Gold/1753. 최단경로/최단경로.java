@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.*;
 
@@ -37,8 +38,8 @@ public class Main {
         int K = Integer.parseInt(br.readLine());
 
         disk = new int[V + 1];
-        Arrays.fill(disk, -1);
-        
+        Arrays.fill(disk,Integer.MAX_VALUE);
+
         ArrayList<ArrayList<Vertex1>> graph = new ArrayList<>();
         graph.add(new ArrayList<>());
         for (int i = 1; i <= V; i++) {
@@ -61,7 +62,7 @@ public class Main {
                 bw.write(String.valueOf(0) + "\n");
             }
             else {
-                if (disk[i] == -1) { // -1 : 끝까지 수정안됨 -> INF
+                if (disk[i] == Integer.MAX_VALUE) { // -1 : 끝까지 수정안됨 -> INF
                     bw.write("INF\n");
                 } else { // 수정됨 : 최단거리 출력
                     bw.write(String.valueOf(disk[i]) + "\n");
@@ -91,19 +92,14 @@ public class Main {
                 for (Vertex1 endVertex : endVertexArrayList) {
                     int endVertexNum = endVertex.getEnd();
                     int endVertexWeight = endVertex.getWeight();
-                    if (disk[endVertexNum] == -1) {
+                    if (disk[endVertexNum] <= pollWeight + endVertexWeight) { // 갱신 필요 없음
+                        // 그냥 continue;
+                    } else {
+                        // 갱신
                         disk[endVertexNum] = pollWeight + endVertexWeight;
                         priorityQueue.add(new Vertex1(endVertexNum, disk[endVertexNum]));
-                    } else { // 최단경로 존재
-                        if (disk[endVertexNum] <= pollWeight + endVertexWeight) {
-                            // 그냥 continue;
-                        } else {
-                            // 갱신
-                            disk[endVertexNum] = pollWeight + endVertexWeight;
-                            priorityQueue.add(new Vertex1(endVertexNum, disk[endVertexNum]));
-                        }
                     }
-                    
+                    //key point: 갱신할때만 priorityQueue에 넣어줘서 중복을 줄여준다.
                 }
             }
         }

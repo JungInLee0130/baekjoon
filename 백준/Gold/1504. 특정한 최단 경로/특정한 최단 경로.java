@@ -119,15 +119,13 @@ public class Main {
                 int endVertexNum = endVertex.getNum();
                 int edgeWeight = endVertex.getWeight();
 
-                if (!visited[endVertexNum]) {
-                    // disk에 최단경로 넣어주기
-                        if (disk[endVertexNum] > edgeWeight + pollWeight) { // disk에 있는 수가 더 크면
-                            disk[endVertexNum] = edgeWeight + pollWeight; // 여태까지의 수와 edgeWeight를 더해줌.
-                            priorityQueue.add(new Vertex(endVertexNum, disk[endVertexNum]));
-                        }
-                        // 갱신안되면 그냥 건너뜀.
-                        // 근데 특정 정점을 통과해야함.
+                if (!visited[endVertexNum]
+                        && (disk[endVertexNum] > edgeWeight + pollWeight)) { // disk에 있는 수가 더 크면
+                    disk[endVertexNum] = edgeWeight + pollWeight; // 여태까지의 수와 edgeWeight를 더해줌.
+                    priorityQueue.add(new Vertex(endVertexNum, disk[endVertexNum]));
                 }
+                // 갱신안되면 그냥 건너뜀.
+                // 근데 특정 정점을 통과해야함.
             }
         }
         return disk[end]; // 도달할수가 없음

@@ -1,9 +1,8 @@
 class Solution {
-    public int solution(int[] arrayA, int[] arrayB) {
+  public int solution(int[] arrayA, int[] arrayB) {
         int answer = 0;
 
-        // 하나의 최대공약수가 1이고, 하나는 최대가 되어야함.
-        // 모두를 나누는 최대공약수도 1이여야함.
+        // 하나의 최대공약수가 다른 배열원소에 나눠지지않아야함.
         int a = arrayA[0];
         for (int i = 1; i < arrayA.length; i++) {
             if (a > arrayA[i]) {

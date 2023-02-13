@@ -1,69 +1,67 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int virusCount = 0;
-    private static Queue<Integer> queue;
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        int N = Integer.parseInt(br.readLine());
-        int M = Integer.parseInt(br.readLine());
-
-        boolean[] vertex = new boolean[N + 1];
-        Arrays.fill(vertex, false);
-
-        ArrayList<ArrayList<Integer>> edge = new ArrayList<>();
-
-        for (int i = 0; i < N + 1; i++) { // 1 ~ N
-            edge.add(new ArrayList<Integer>());
-        }
-        
-        // 그래프 작성: 인접리스트
-        for (int i = 0; i < M; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int startNode = Integer.parseInt(st.nextToken());
-            int endNode = Integer.parseInt(st.nextToken());
-
-            // 무방향 그래프 (양방향 그래프)
-            edge.get(startNode).add(endNode);
-            edge.get(endNode).add(startNode);
-        }
-
-        // 오름차순 정렬...
-        for (int i = 0; i < edge.size(); i++) {
-            Collections.sort(edge.get(i));
-        }
-        // BFS 사용
-        queue = new LinkedList<>();
-        BFS(vertex, edge, 1);
-
-        bw.write(String.valueOf(virusCount));
-
-        bw.flush();
-        br.close();
-        bw.close();
-    }
-
-    private static void BFS(boolean[] visited, ArrayList<ArrayList<Integer>> edge, int start) {
-        visited[start] = true;
-
-        queue.add(start);
-
-        while (!queue.isEmpty()) {
-            int element = queue.poll();
-
-            for (int i = 0; i < edge.get(element).size(); i++) {
-                int endVertex = edge.get(element).get(i);
-
-                if (!visited[endVertex]) {
-                    virusCount++;
-                    visited[endVertex] = true;
-                    queue.add(endVertex);
-                }
-            }
-        }
-    }
+	static int N;
+	static int M;
+	static int[][] map;
+	static int[] distance;
+	
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		
+		N = Integer.parseInt(br.readLine());
+		M = Integer.parseInt(br.readLine());
+		
+		map = new int[N][N];
+		for (int i = 0; i < M; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			
+			int s = Integer.parseInt(st.nextToken()) - 1;
+			int e = Integer.parseInt(st.nextToken()) - 1;
+			map[s][e] = 1;
+			map[e][s] = 1;
+		}
+		distance = new int[N];
+		count = 0;
+		bfs();
+		result();
+		System.out.println(count - 1); // 자기자신 빼야함.
+		
+		
+		bw.flush();
+		br.close();
+		bw.close();
+	}
+	private static void result() {
+		for (int i = 0; i < N; i++) {
+			if (distance[i] == 2) {
+				count++;
+			}
+		}
+	}
+	static int count;
+	private static void bfs() {
+		Queue<Integer> que = new LinkedList<Integer>();
+		que.add(0);
+		distance[0] = 2; // 방문표시
+		
+		while (!que.isEmpty()) {
+			int s = que.poll();
+			for (int e = 0; e < N; e++) {
+				if (distance[e] != 0) continue; // 방문
+				if (map[s][e] == 1) {
+					que.add(e);
+					distance[e] = 2; // 방문표시
+				}
+			}
+		}
+	}
 }

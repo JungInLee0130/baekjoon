@@ -31,7 +31,10 @@ public class Main {
 		}
 		distance = new int[N];
 		count = 0;
-		bfs();
+		distance[0] = 2; // 방문
+		min = Integer.MAX_VALUE / 1000;
+		dfs(0, 0);
+		//bfs();
 		result();
 		System.out.println(count - 1); // 자기자신 빼야함.
 		
@@ -39,6 +42,16 @@ public class Main {
 		bw.flush();
 		br.close();
 		bw.close();
+	}
+	private static int min;
+	private static void dfs(int start, int cnt) {
+		for (int e = 0; e < N; e++) {
+			if (map[start][e] == 1 && distance[e] != 2) { // 방문한게 아니고, 1이면 go
+				distance[e] = 2;
+				dfs(e, cnt + 1);
+			}
+		}
+		min = Math.min(min, cnt);
 	}
 	private static void result() {
 		for (int i = 0; i < N; i++) {
@@ -64,4 +77,5 @@ public class Main {
 			}
 		}
 	}
+	
 }

@@ -39,14 +39,13 @@ public class Main {
 		while (!allComplete()) {
 			// temp : board로 복사후 치즈가 모두 없어질때까지 반복.
 			scan(board, temp);
-			// 바깥쪽 bfs로 2로 채우기 : board
+			// temp :바깥쪽 bfs로 2로 채우기
 			bfs2(0, 0, temp);
 			
-			// 1에 해당하는거 4방중 2개 이상이 2이면 1 -> 3으로 바꿈. : board
+			// temp : 1에 해당하는거 4방중 2개 이상이 2이면 1 -> 3으로 바꿈. 
 			change3(temp);
 			
 			// temp : 복사하면서 3 -> 0으로 (다 녹임 : count++)
-//			scan(temp, board);
 			change0(temp);
 			
 			cheeseCount++;

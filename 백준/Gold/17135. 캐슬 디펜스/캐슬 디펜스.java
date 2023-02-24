@@ -48,10 +48,11 @@ public class Main {
             }
         }
 
+        // 임시 배열
         temp = new int[N][M];
         scan(temp, board);
         // N번 행에 성이 있음 -> 궁수 배치 가능.
-        visited = new boolean[M];
+        //visited = new boolean[M];
         arr = new int[3];
         combi(0, 0);
 
@@ -63,7 +64,7 @@ public class Main {
         bw.close();
     }
 
-    private static boolean[] visited;
+    //private static boolean[] visited;
     private static int[] arr;
     private static int total = 0;
     private static void combi(int cnt, int start) {
@@ -198,9 +199,9 @@ public class Main {
         return count;
     }
 
-    private static void print() {
-        /*for (Enemy e: enemyList) {
+    /*private static void print() {
+        *//*for (Enemy e: enemyList) {
             System.out.println(e);
-        }*/
-    }
+        }*//*
+    }*/
 }

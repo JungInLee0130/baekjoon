@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int N;
-    private static int[] parent;
     private static int[] population;
     static ArrayList<ArrayList<Integer>> graph;
     public static void main(String[] args) throws IOException {
@@ -20,6 +19,7 @@ public class Main {
         for (int i = 0; i < N; i++) {
             population[i] = Integer.parseInt(st.nextToken());
         }
+        // 집합 1, 2
         arr1 = new int[N];
         arr2 = new int[N];
 
@@ -39,17 +39,6 @@ public class Main {
                 graph.get(end).add(start);
             }
         }
-        /*makeSet();
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int len = Integer.parseInt(st.nextToken());
-            for (int j = 0; j < len; j++) {
-                int from = i;
-                int to = Integer.parseInt(st.nextToken()) - 1;
-
-                union(from, to);
-            }
-        }*/
 
         visited = new boolean[N];
         // 부분집합
@@ -65,18 +54,12 @@ public class Main {
 
 
 
-
-        /*for (int i = 1; i <= N; i++) {
-            bw.write(String.valueOf(parent[i]) + " ");
-        }*/
-
-
         bw.flush();
         br.close();
         bw.close();
     }
 
-    private static boolean[] visited;
+    private static boolean[] visited; // 부분 집합용 배열
     private static int[] arr1;
     private static int[] arr2;
     private static int min;
@@ -123,11 +106,11 @@ public class Main {
     }
 
 
-    private static boolean[] bfsVisited;
+    private static boolean[] bfsVisited; // bfs용 배열
     private static void bfsA(int start) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(start);
-        bfsVisited[start] = true;
+        bfsVisited[start] = true; // 먼저 visited
 
         while (!queue.isEmpty()) {
             Integer poll = queue.poll();
@@ -155,42 +138,6 @@ public class Main {
                 bfsVisited[end] = true;
                 queue.add(end);
             }
-        }
-    }
-
-    private static void union(int x, int y) {
-        x = find(x);
-        y = find(y);
-
-        if (x != y) {
-            int min = Math.min(x, y);
-            int max = Math.max(x, y);
-
-            parent[max] = min; // 연결
-        }
-    }
-    /*for (int i = 0; i < N; i++) {
-            if (parentArr == find(arr[i])) {
-                continue;
-            }
-            for (: graph) {
-
-            }
-        }*/
-
-    private static int find(int x) {
-        if (parent[x] == x) return x;
-        else return parent[x] = find(parent[x]);
-    }
-
-    private static int[] rank;
-    private static void makeSet() {
-        parent = new int[N];
-        rank = new int[N];
-
-        for (int i = 0; i < N; i++) {
-            parent[i] = i;
-            rank[i] = 1;
         }
     }
 }

@@ -30,7 +30,6 @@ public class Main {
 
         // 양쪽에 +2를 추가해야할듯
         board = new int[102][102];
-        copyMap = new int[102][102];
 
         for (int i = 0; i < N; i++) {
             int c = black[i][0];
@@ -42,68 +41,26 @@ public class Main {
             }
         }
 
-        // board 복사 -> copyMap
-        for (int i = 0; i < 102; i++) {
-            copyMap[i] = Arrays.copyOf(board[i], 102);
-        }
-
-        // 1 -> 3 : 모든 둘레에 대해서
-        for (int r = 0; r < 102; r++) {
-            for (int c = 0; c < 102; c++) {
-                if (copyMap[r][c] == 0 && !visited[r][c]) {
-                    bfs(r,c);
-                }
-
-            }
-        }
-        // 예외적으로 끝에있는 1에 대하여
-
 
 
         // 3인 원소 세기
         total = 0;
         for (int i = 1; i <= 100; i++) {
             for (int j = 1; j <= 100; j++) {
-                if (copyMap[i][j] == 3){
+                if (board[i][j] == 1){
                     for (int d = 0; d < 4; d++) {
                         int nr = i + dr[d];
                         int nc = j + dc[d];
-                        
-                        if (copyMap[nr][nc] == 0){
+
+                        if (board[nr][nc] == 0){
                             total++;
                         }
                     }
                 }
             }
         }
-        /*for (int r = 1; r <= 100; r++) {
-            for (int c = 1; c <= 100; c++) {
-                if (copyMap[r][c - 1] == 3 && copyMap[r][c] == 3
-                        || copyMap[r][c] == 3 && copyMap[r][c + 1] == 3) {
-                    total++;
-                }
-            }
-        }*/
+        
 
-        /*for (int c = 1; c <= 100; c++) {
-            for (int r = 1; r <= 100; r++) {
-                if (copyMap[r - 1][c] == 3 && copyMap[r][c] == 3
-                        || copyMap[r][c] == 3 && copyMap[r + 1][c] == 3) {
-                    total++;
-                }
-            }
-        }*/
-		
-		
-		
-		/*System.out.println();
-		for (int i = 0; i <= 101; i++) {
-			for (int j = 0; j <= 101; j++) {
-				System.out.print(copyMap[i][j] + " ");
-			}
-			System.out.println();
-		}
-		System.out.println();*/
 
         System.out.println(total);
 
@@ -118,41 +75,24 @@ public class Main {
     // 0이 있는 바깥쪽 모두 bfs로 훑으면서 만나는 1 -> 3
     static int[] dr = {-1,1,0,0};
     static int[] dc = {0,0,-1,1};
-    static boolean[][] visited = new boolean[102][102];
-    private static void bfs(int r, int c) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {r,c});
-        visited[r][c] = true;
 
-        while (!queue.isEmpty()) {
-            int[] cur = queue.poll();
-            int curR = cur[0];
-            int curC = cur[1];
-
-
-            for (int d = 0; d < 4; d++) {
-                int nr = curR + dr[d];
-                int nc = curC + dc[d];
-
-                // 범위 안
-                if (!check(nr,nc)) continue;
-                // 중복방문 방지
-                if (visited[nr][nc]) continue;
-                // 이미 바꾼것은 continue;
-                if (copyMap[nr][nc] == 3) continue;
-                // 1이면 3으로 바꾸고 continue;
-                if (copyMap[nr][nc] == 1) {
-                    copyMap[nr][nc] = 3; // 겉에 3으로 바꾸기
-                    continue;
-                }
-                // 0인 곳은 visited 하고 큐에 넣음
-                visited[nr][nc] = true;
-                queue.add(new int[] {nr,nc});
-            }
-        }
-    }
-    private static boolean check(int nr, int nc) {
-        return 1 <= nr && nr < 101 && 1 <= nc && nc < 101;
-    }
 
 }
+
+// bfs 쓸필요도 없다는게 에바인듯.
+/* 검은색 스카프 최소한만 사용. 둘레의 길이 측정.
+ * 1. 검은색 스카프의 수 (100이하)
+ * 2. 검은색 스카프가 놓인 위치 : (왼쪽아래의 x,y 좌표) (10x10)
+ *
+ * 둘레의 길이 출력
+ *
+ *
+ * */
+
+/*
+4
+3 7
+5 2
+15 7
+13 14
+*/

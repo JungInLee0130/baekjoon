@@ -19,7 +19,6 @@ public class Main {
         }
 
         total = 0;
-        // 더이상 터질께 없을때
         boolean isDown = true;
         while(isDown) {
             isDown = false;
@@ -27,27 +26,15 @@ public class Main {
             for (int i = 0; i < R; i++) {
                 for (int j = 0; j < C; j++) {
                     if (map[i][j] != '.') {
-                        // 터뜨리기 : 못터뜨리면 다음.
                         if(bomb(i, j)){
                             isDown = true;
-                            // 출력
                         }
                     }
                 }
             }
-            // 떨어뜨리기
             if(isDown){
                 down();
                 total++;
-                /*System.out.println();
-                for (int r = 0; r < 12; r++) {
-                    for (int c = 0; c < 6; c++) {
-                        System.out.print(map[r][c]);
-                    }
-                    System.out.println();
-                }
-                System.out.println();
-                // 출력*/
             }
         }
 
@@ -56,24 +43,6 @@ public class Main {
         bw.flush();
         br.close();
         bw.close();
-    }
-
-    private static void down() {
-        for (int c = 0; c < C; c++) {
-            ArrayList<Character> temp = new ArrayList<>();
-            for (int r = R - 1; r >= 0; r--) {
-                if (map[r][c] != '.') {
-                    temp.add(map[r][c]);
-                    map[r][c] = '.';
-                }
-            }
-            int index = 0;
-            if (!temp.isEmpty()) {
-                while (index < temp.size()) {
-                    map[R - 1 - index][c] = temp.get(index++);
-                }
-            }
-        }
     }
 
     private static boolean bomb(int r, int c) { // 그냥 짜야함.
@@ -109,6 +78,7 @@ public class Main {
                 queue.add(new Point(nr, nc));
             }
         }
+        // 4개이상이면 모두 터뜨림
         if (cnt >= 4) {
             for (int i = 0; i < R; i++) {
                 for (int j = 0; j < C; j++) {
@@ -119,54 +89,38 @@ public class Main {
         }
     }
 
-    private static int total;
-    private static boolean[][] visited;
-    private static boolean isChecked;
-    private static void dfs(int r, int c, int cnt, char color) {
-        for (int d = 0; d < 4; d++) {
-            int nr = r + dr[d];
-            int nc = c + dc[d];
-
-            if (!check(nr,nc)) continue;
-            if (visited[nr][nc]) continue;
-            if (color != map[nr][nc]) continue;
-
-            visited[nr][nc] = true;
-            if (cnt >= 3) {
-                isChecked = true;
-                dfs(nr, nc, cnt + 1, color);
+    private static void down() {
+        for (int c = 0; c < C; c++) {
+            // temp에 색깔 순서대로 대입
+            ArrayList<Character> temp = new ArrayList<>();
+            // 뒤에서부터
+            for (int r = R - 1; r >= 0; r--) {
+                if (map[r][c] != '.') {
+                    temp.add(map[r][c]);
+                    map[r][c] = '.';
+                }
             }
-            else {
-                dfs(nr, nc, cnt + 1, color);
+            int index = 0;
+            if (!temp.isEmpty()) {
+                // 뒤에서부터 대입
+                while (index < temp.size()) {
+                    map[R - 1 - index][c] = temp.get(index++);
+                }
             }
-        }
-        if (isChecked) {
-            map[r][c] = '.';
         }
     }
 
+    private static int total;
+    private static boolean[][] visited;
+    private static boolean isChecked;
     private static int R = 12;
     private static int C = 6;
-    // 근처에 4개있으면 제거후 아래로 떨어뜨림.
-    // 그리고 아마 위에부터 제거해야할거임.
-    // 위에 부터 훑는다.
     private static int[] dr = {-1, 1, 0, 0};
     private static int[] dc = {0, 0, 1, -1};
     
-    // 한번 다 터진다음에 -> 내려오고 -> 또 다터짐.
-
-    private static boolean check(int r, int c)
-    {
+    private static boolean check(int r, int c) {
         return 0 <= r && r < R && 0 <= c && c < C;
     }
 
 
 }
-/* 터질때마다 1연쇄 증가
-* 상하좌우 4개이상 같은 색이 있을 경우 터짐.
-* 여러그룹이 터져도 1연쇄임.
-* 12x6,
-* RGBPY
-* .은 빈공간
-* 몇 연쇄, 하나도 안일어나면 0출력
-* */

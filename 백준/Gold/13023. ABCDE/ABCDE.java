@@ -32,6 +32,8 @@ public class Main {
 
         // 1, 0
         // 길이가 5인거 찾아야함. 최단거리 아님
+        // 길이가 5가아님 4임.
+        // dfs들어갈때 visited하고 들어가야함
         isTrue = false;
         for (int i = 0; i < N; i++) {
             if (graph.get(i).size() > 0) { // 간선이 있는것만 순회
@@ -60,8 +62,6 @@ public class Main {
     static boolean isTrue;
     static boolean[] visited;
     private static void dfs(int i, int count) {
-        //if (isTrue) return;
-
         if (count == 4) {
             isTrue = true;
             return;

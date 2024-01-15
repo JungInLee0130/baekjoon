@@ -36,6 +36,7 @@ public class Main {
         for (int i = 0; i < N; i++) {
             if (graph.get(i).size() > 0) { // 간선이 있는것만 순회
                 visited = new boolean[N];
+                visited[i] = true;
                 dfs(i, 0);
                 if (isTrue) {
                     break;
@@ -49,7 +50,7 @@ public class Main {
         else{
             System.out.println(0);
         }
-        
+
 
         bw.flush();
         br.close();
@@ -59,9 +60,9 @@ public class Main {
     static boolean isTrue;
     static boolean[] visited;
     private static void dfs(int i, int count) {
-        if (isTrue) return;
+        //if (isTrue) return;
 
-        if (count == 5) {
+        if (count == 4) {
             isTrue = true;
             return;
         }

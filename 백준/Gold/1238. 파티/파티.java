@@ -79,19 +79,21 @@ public class Main {
     private static void dijk(int start) { // 시작점부터 모든 지점까지의 최단거리
         PriorityQueue<Vertex> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(new Vertex(start, 0));
-        //visited[start] = true;
         dist[start][start] = 0;
 
         while (!priorityQueue.isEmpty()) {
             Vertex poll = priorityQueue.poll();
 
+            if (visited[poll.end]) {
+                continue;
+            }
+            visited[poll.end] = true;
+
             for (Vertex ends: graph.get(poll.end)) {
                 int end = ends.end;
                 int weight = ends.weight;
 
-                //!visited[end] &&
-                if (dist[start][end] > weight + poll.weight) {
-                    visited[end] = true;
+                if (!visited[end] && dist[start][end] > weight + poll.weight) {
                     dist[start][end] = weight + poll.weight;
                     priorityQueue.add(new Vertex(end, dist[start][end]));
                 }

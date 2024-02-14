@@ -34,10 +34,9 @@ public class Main {
             min = Integer.MAX_VALUE;
             visited = new boolean[N + 1];
             visited[2] = true;
-            cnt = 0;
-            dfs(2, 0);
+            cnt = dfs(2, 0);
 
-            System.out.println(min);
+            System.out.println(cnt);
         }
     }
 
@@ -45,19 +44,14 @@ public class Main {
     static boolean[] visited;
     static boolean isOk;
     static int cnt;
-    private static void dfs(int start, int depth) {
-        if (check()) {
-            min = Math.min(min, cnt);
-            return;
-        }
-
+    private static int dfs(int start, int depth) {
         for (Integer end : graph.get(start)) {
             if (!visited[end] && !isOk) {
                 visited[end] = true;
-                cnt++;
-                dfs(end, depth + 1);
+                depth = dfs(end, depth + 1);
             }
         }
+        return depth;
     }
 
     private static boolean check() {

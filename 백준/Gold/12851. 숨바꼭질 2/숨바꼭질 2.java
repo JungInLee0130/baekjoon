@@ -1,85 +1,62 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class Main {
+class Main {
     static int N, K;
-    public static void main(String[] args) throws IOException {
+    static int[] time = new int[100001];
+    static int minTime = 987654321;
+    static int count = 0;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
+        st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        bfs(); // min
-        //arr = new int[min + 1];
-        //dfs(N, K, 0, min); // count
-
-        System.out.println(min);
-        System.out.println(count);
-    }
-
-    private static int[] arr;
-    private static void dfs(int start, int end, int depth, int l) {
-        if (depth > l) return;
-
-        if (start == end) {
-            for (int i = 0; i <= l; i++) {
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            count++;
+        if (N >= K) {
+            System.out.println((N-K) + "\n1");
             return;
         }
 
-        arr[depth] = start;
-        dfs(start + 1, end, depth + 1, l);
-        arr[depth] = start;
-        dfs(start - 1, end, depth + 1, l);
-        arr[depth] = start;
-        dfs(start * 2, end, depth + 1, l);
+        bfs();
+
+        System.out.println(minTime + "\n" + count);
     }
 
+    static void bfs() {
+        Queue<Integer> q = new LinkedList<Integer>();
 
-    static Queue<int[]> queue;
-    static int[] visit; // int로 visited 체크, 중복 고려해야하기 때문
-    static int min = Integer.MAX_VALUE;
-    static int count = 0;
+        q.add(N);
+        time[N] = 1;
 
-    private static void bfs() {
-        queue = new LinkedList<>();
-        visit = new int[200000];
-        queue.add(new int[]{N, 0});
-        visit[N] = 1; // 방문 함
+        while (!q.isEmpty()) {
+            int now = q.poll();
 
-        while (!queue.isEmpty()) {
-            int[] poll = queue.poll();
-            int curX = poll[0];
-            int time = poll[1];
+            // now 방문 시간이 최소 시간보다 크면 뒤는 더 볼 필요 없음
+            if (minTime < time[now]) return;
 
-            if (curX == K) {
-                if (min == Integer.MAX_VALUE) {
-                    min = time;
-                }
-                if (min == time){
+            for (int i=0; i<3; i++) {
+                int next;
+
+                if (i == 0)         next = now + 1;
+                else if (i == 1)    next = now - 1;
+                else                next = now * 2;
+
+                if (next < 0 || next > 100000) continue;
+
+                if (next == K) {
+                    minTime = time[now];
                     count++;
                 }
-                continue;
-            }
 
-            int[] nx = {curX + 1, curX - 1, curX * 2};
-
-            for (int i = 0; i < 3; i++) {
-                int next = nx[i];
-                if (next < 0) continue;
-                if (next >= 200000) continue;
-                // 중복은 제거한다.
-                // 근데 신경쓰이는게 완전히 똑같은 경로일때 다른 경우의 수
-                // 따라서 time + 1인경우도 제외
-                // 방문하지 않은경우는 그냥 들어가고
-                if (visit[next] == 0 || visit[next] == time + 1) {
-                    visit[next] = time + 1;
-                    queue.add(new int[]{next, time + 1});
+                // 첫 방문이거나 (time[next] == 0)
+                // 이미 방문한 곳이어도 같은 시간에 방문했다면 (time[next] == time[now] + 1)
+                // 경우의 수에 추가될 수 있기 때문에 Queue 에 한번 더 넣어줌
+                if (time[next] == 0 || time[next] == time[now] + 1) {
+                    q.add(next);
+                    time[next] = time[now] + 1;
                 }
             }
         }

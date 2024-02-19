@@ -18,48 +18,39 @@ public class Main {
             B = Integer.parseInt(st.nextToken());
 
             min = Integer.MAX_VALUE;
-            ArrayList<String> arrayList = bfs(A, B);
+            String str = bfs(A, B);
 
-            if (arrayList.size() > 0) {
-                StringBuilder sb = new StringBuilder();
-                for (String s: arrayList) {
-                    sb.append(s);
-                }
-                System.out.println(sb.toString());
+            if (str.length() > 0) {
+                System.out.println(str);
             }
         }
     }
-
-    static int[] time;
     static Queue<Point> queue;
     static int min = Integer.MAX_VALUE;
     static class Point{
         int num;
-        ArrayList<String> arrayList;
+        String order;
 
-        public Point(int num, ArrayList<String> arrayList) {
+        public Point(int num, String order) {
             this.num = num;
-            this.arrayList = arrayList;
+            this.order = order;
         }
     }
     static boolean[] visited;
-    private static ArrayList<String> bfs(int a, int b) {
+    private static String bfs(int a, int b) {
         queue = new LinkedList<>();
-        queue.add(new Point(a, new ArrayList<>()));
+        queue.add(new Point(a, ""));
         visited = new boolean[10000];
-        //time = new int[10000]; // 0 ~ 9999
-        //Arrays.fill(time, -1);
-        //time[a] = 0;
         visited[a] = true;
 
         while (!queue.isEmpty()) {
             Point poll = queue.poll();
 
             if (poll.num == b) {
-                return poll.arrayList;
+                return poll.order;
             }
 
-            String[] nxc = {"D", "S", "L", "R"};
+            char[] nxc = {'D', 'S', 'L', 'R'};
             int[] nx = new int[4];
             nx[0] = 2 * poll.num % 10000;
             nx[1] = poll.num - 1;
@@ -84,24 +75,11 @@ public class Main {
                 if (visited[next]) continue;
                 visited[next] = true;
                 // copy and 대입
-                ArrayList<String> arrayList = new ArrayList<>();
-                for (String s: poll.arrayList) {
-                    arrayList.add(s);
-                }
-                arrayList.add(nxc[i]);
-                queue.add(new Point(next, arrayList));
-                /*if (time[next] == -1 || time[next] == time[poll.num] + 1) {
-                    time[next] = time[poll.num] + 1;
-                    // copy and 대입
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    for (String s: poll.arrayList) {
-                        arrayList.add(s);
-                    }
-                    arrayList.add(nxc[i]);
-                    queue.add(new Point(next, arrayList));
-                }*/
+                String str = poll.order;
+                str += nxc[i];
+                queue.add(new Point(next, str));
             }
         }
-        return new ArrayList<>();
+        return "";
     }
 }

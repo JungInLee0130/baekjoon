@@ -17,7 +17,7 @@ public class Main {
             liquid[i] = Integer.parseInt(st.nextToken());
         }
 
-        answer = Integer.MAX_VALUE;
+        answer = Long.MAX_VALUE;
         bs();
     }
 

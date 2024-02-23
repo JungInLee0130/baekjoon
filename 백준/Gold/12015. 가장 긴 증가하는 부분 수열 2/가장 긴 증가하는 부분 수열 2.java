@@ -1,40 +1,48 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    static int N;
+    static int arr[];
     public static void main(String[] args) throws IOException {
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
-        List<Integer> list = new ArrayList<>();
-        list.add(0);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N];
 
-        for(int i = 0 ; i < n; i++) {
-            int value = arr[i] = Integer.parseInt(st.nextToken());
-            if(value > list.get(list.size() - 1)) list.add(value);
-            else{
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        // 이분 탐색 : 정리느낌
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(0);
+
+        for (int i = 0; i < N; i++) {
+            int num = arr[i];
+
+            if (num > ans.get(ans.size() - 1)) {
+                ans.add(num);
+            } else {
+                // 이분탐색을 통해 적절한 자리 찾기 -> 대체
                 int left = 0;
-                int right = list.size() - 1;
+                int right = ans.size() - 1;
 
-                while(left < right){
-                    int mid = (left + right) >> 1;
-                    if(list.get(mid) >= value){
-                        right = mid;
-                    }else{
+                while (left < right) {
+                    int mid = (left + right) / 2;
+
+                    if (num > ans.get(mid)) {
                         left = mid + 1;
+                    } else{
+                        right = mid;
                     }
                 }
-                list.set(right, value);
+                ans.set(right, num);
             }
         }
-        System.out.println(list.size() - 1);
-    }
 
+        System.out.println(ans.size() - 1);
+    }
 }

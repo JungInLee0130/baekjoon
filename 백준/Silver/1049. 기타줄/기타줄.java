@@ -23,6 +23,9 @@ public class Main {
             band[i][1] = Integer.parseInt(st.nextToken());
         }
 
+        // 완탐이 아니라 그냥 그리디 기초.
+        // 결국엔 가장 낮은것만 놓고 계산하면 됨.
+
         int minA = Integer.MAX_VALUE;
         int minB = Integer.MAX_VALUE;
         for (int i = 0; i < M; i++) {

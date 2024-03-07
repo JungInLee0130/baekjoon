@@ -1,0 +1,14 @@
+SELECT A.FOOD_TYPE, REST_ID, REST_NAME, FAVORITES
+FROM REST_INFO A,
+(SELECT FOOD_TYPE, MAX(FAVORITES) MAXFAVOR
+FROM REST_INFO
+GROUP BY FOOD_TYPE) B
+WHERE A.FOOD_TYPE = B.FOOD_TYPE
+and A.FAVORITES = B.MAXFAVOR
+ORDER BY FOOD_TYPE DESC;
+
+# order by가 마지막이라 limit는 못씀
+# 즐겨찾기수가 가장많은 식당의
+# 음식종류별로 
+# 음식종류, ID, 식당이름, 즐겨찾기수
+# 음식종류 기준으로 내림차순 정렬

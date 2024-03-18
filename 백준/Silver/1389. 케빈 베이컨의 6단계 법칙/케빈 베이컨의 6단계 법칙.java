@@ -30,20 +30,19 @@ public class Main {
         }
 
         // 다익스트라
-        dist = new int[N + 1]; // 1 ~ N
+        dist = new int[N + 1][N + 1]; // 1 ~ N
         int[] kevin = new int[N + 1];
         for (int i = 1; i <= N; i++) {
-            Arrays.fill(dist, Integer.MAX_VALUE);
-            dist[i] = 0;
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
             dijk(i);
-            for (int j = 1; j <= N; j++) {
-                kevin[i] += dist[j];
-            }
         }
 
         int min = Integer.MAX_VALUE;
         int index = 0;
         for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                kevin[i] += dist[i][j];
+            }
             if (min > kevin[i]) {
                 min = kevin[i];
                 index = i;
@@ -53,7 +52,7 @@ public class Main {
         System.out.println(index);
     }
 
-    static int[] dist;
+    static int[][] dist;
     static class Vertex implements Comparable<Vertex>{
         int num;
         int weight;
@@ -70,10 +69,10 @@ public class Main {
         }
     }
     private static void dijk(int start) {
+        dist[start][start] = 0;
         PriorityQueue<Vertex> pq = new PriorityQueue<>();
         pq.add(new Vertex(start, 0));
-        boolean[] visited = new boolean[N + 1]; // 1 ~ N
-        //visited[start] = true;
+        // 아 다익스트라 visited 체크 쥰ㄴㄴㄴ내 헷갈리네
 
         while (!pq.isEmpty()) {
             Vertex poll = pq.poll();
@@ -81,13 +80,10 @@ public class Main {
             for (Vertex v: graph.get(poll.num)) {
                 int endNum = v.num;
                 int endWeight = v.weight;
-                //if (!visited[endNum]) {
-                    if (dist[endNum] > dist[poll.num] + endWeight) {
-                        dist[endNum] = dist[poll.num] + endWeight;
-                        //visited[endNum] = true;
-                        pq.add(new Vertex(endNum, dist[endWeight]));
-                    }
-                //}
+                if (dist[start][endNum] > dist[start][poll.num] + endWeight) {
+                    dist[start][endNum] = dist[start][poll.num] + endWeight;
+                    pq.add(new Vertex(endNum, dist[start][endWeight]));
+                }
             }
         }
     }

@@ -1,0 +1,13 @@
+-- 코드를 입력하세요
+SELECT CATEGORY, SUM(SALES) TOTAL_SALES
+FROM BOOK b, BOOK_SALES bs
+WHERE b.BOOK_ID = bs.BOOK_ID
+AND SALES_DATE >= '2022-01-01' AND SALES_DATE < '2022-02-01'
+GROUP BY CATEGORY
+ORDER BY CATEGORY
+
+# 2022년 1월
+# 카테고리별
+# 도서 판매량 합산
+# 카테고리, 합산 판매량 출력
+# 카테고리 기준으로 오름차순

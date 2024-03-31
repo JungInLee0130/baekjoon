@@ -51,7 +51,6 @@ public class Main {
             if (!check(nx,ny)) continue;
             if (map[x][y] < map[nx][ny]){
                 dp[x][y] = Math.max(dp[x][y], dfs(nx, ny) + 1);
-                dfs(nx, ny);
             }
         }
 
@@ -60,49 +59,6 @@ public class Main {
 
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-
-    static class Point{
-        int x;
-        int y;
-        int cnt;
-
-        public Point(int x, int y, int cnt) {
-            this.x = x;
-            this.y = y;
-            this.cnt = cnt;
-        }
-    }
-    private static int bfs(int x, int y) {
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y, 1));
-
-        Point poll = new Point(x, y, 1);
-        dp[x][y] = 1;
-        while (!queue.isEmpty()) {
-            poll = queue.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nx = poll.x + dx[i];
-                int ny = poll.y + dy[i];
-
-                if (!check(nx, ny)) continue;
-                if (map[nx][ny] <= map[poll.x][poll.y]) continue;
-
-                if (dp[nx][ny] > 0) { // 최대치가 담겨있음
-                    dp[x][y] = poll.cnt + dp[nx][ny];
-                    continue;
-                }
-
-                queue.add(new Point(nx, ny, poll.cnt + 1));
-            }
-        }
-
-        if (dp[x][y] < poll.cnt) {
-            dp[x][y] = poll.cnt;
-        }
-
-        return dp[x][y];
-    }
 
     private static boolean check(int nx, int ny) {
         return 0 <= nx && nx < N && 0 <= ny && ny < N;

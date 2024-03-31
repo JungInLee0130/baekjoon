@@ -52,7 +52,7 @@ public class Main {
             //System.out.println(low+ "," + high);
         }
 
-        System.out.println(result);
+        System.out.println(low - 1);
     }
 
     static int[] x;

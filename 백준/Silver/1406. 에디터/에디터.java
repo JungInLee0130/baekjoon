@@ -56,7 +56,7 @@ public class Main {
         }
 
         while (!cursorRight.isEmpty()) {
-            bw.write(cursorRight.pop());
+            bw.write(cursorRight.pop()); // ㅅㅂ bw.write까지 써야되? sout하면 시간초과남.
         }
 
         bw.flush();

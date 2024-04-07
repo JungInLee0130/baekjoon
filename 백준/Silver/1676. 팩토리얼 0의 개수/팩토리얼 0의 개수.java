@@ -10,6 +10,13 @@ public class Main {
 
         N = Integer.parseInt(br.readLine()); // 500이하
 
+        // 0인경우에 저절로 출력이되네...
+        if (N == 0) {
+            System.out.println(0);
+            return;
+        }
+
+
         int two = 0;
         int five = 0;
         for (int i = N; i >= 1; i--) { // N -> 1까지 2,5의 개수를 카운트

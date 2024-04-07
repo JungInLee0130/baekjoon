@@ -1,0 +1,8 @@
+-- 코드를 입력하세요
+SELECT ao.ANIMAL_ID, IFNULL(ao.NAME, null) AS NAME
+FROM ANIMAL_OUTS ao JOIN ANIMAL_INS ai
+ON ao.ANIMAL_ID = ai.ANIMAL_ID
+WHERE ao.DATETIME < ai.DATETIME
+ORDER BY ai.DATETIME
+
+# 입양일이 더 빠른 동물의 아이디와 이름

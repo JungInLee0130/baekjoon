@@ -10,33 +10,41 @@ public class Main {
 
         N = Integer.parseInt(br.readLine()); // 500이하
 
-        // 0팩토리얼인 경우
-        if (N == 0) {
-            System.out.println(0);
-            return;
+        int two = 0;
+        int five = 0;
+        for (int i = N; i >= 1; i--) { // N -> 1까지 2,5의 개수를 카운트
+            two += countTwo(i);
+            five += countFive(i);
         }
 
-        BigInteger result = new BigInteger(String.valueOf(N));
+        System.out.println(Math.min(two, five));
+    }
 
-        for (int i = N - 1; i >= 1; i--) {
-            result = result.multiply(new BigInteger(String.valueOf(i)));
-        }
-
-        String str = result.toString();
-        //System.out.println(str);
-
-        int len = str.length();
-
-        int count = 0;
-        for (int i = len - 1; i >= 0; i--) {
-            if (str.charAt(i) - '0' != 0) {
-                break;
+    private static int countFive(int n) {
+        int times = 0;
+        while (n >= 0) {
+            if (n % 5 == 0) {
+                n /= 5;
+                times++;
             }
             else{
-                count++;
+                break;
             }
         }
+        return times;
+    }
 
-        System.out.println(count);
+    private static int countTwo(int n) {
+        int times = 0;
+        while (n >= 0) {
+            if (n % 2 == 0) {
+                n /= 2;
+                times++;
+            }
+            else{
+                break;
+            }
+        }
+        return times;
     }
 }

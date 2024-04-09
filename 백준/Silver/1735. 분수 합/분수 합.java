@@ -23,15 +23,21 @@ public class Main {
 
         int gcd = 1;
         // gcd(a,b) = gcd(b,r)
+        // r == 0 -> gcd = b
         int a = down;
         int b = up;
         int r = down % up;
-        while (true) {
+        while (true) { // true는 안쓰는게 좋을꺼같은데
+            // execute
             r = a % b; // r
+            
+            // condition
             if (r == 0) {
                 gcd = b;
                 break;
             }
+            
+            // result
             a = b;
             b = r;
         }

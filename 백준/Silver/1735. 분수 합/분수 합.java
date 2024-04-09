@@ -22,11 +22,18 @@ public class Main {
         int down = a[0][1] * a[1][1];
 
         int gcd = 1;
-        for (int i = up; i >= 2; i--) {
-            if (down % i == 0 && up % i == 0) {
-                gcd = i;
+        // gcd(a,b) = gcd(b,r)
+        int a = down;
+        int b = up;
+        int r = down % up;
+        while (true) {
+            r = a % b; // r
+            if (r == 0) {
+                gcd = b;
                 break;
             }
+            a = b;
+            b = r;
         }
 
         up /= gcd;

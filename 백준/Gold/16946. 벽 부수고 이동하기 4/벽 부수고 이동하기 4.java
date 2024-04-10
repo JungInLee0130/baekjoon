@@ -43,7 +43,7 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                    // 벽이 있는 곳에 한에서, 상하좌우의 구역의 개수 파악후, 해쉬맵에 있는 값을 넣어주면됨.
+                // 벽이 있는 곳에 한에서, 상하좌우의 구역의 개수 파악후, 해쉬맵에 있는 값을 넣어주면됨.
                 sb.append(mapCount(i, j)); // 플러스 자기자신
             }
             sb.append("\n");
@@ -67,12 +67,10 @@ public class Main {
             int ny = y + dc[d];
 
             if (!check(nx,ny)) continue;
-            if (group[nx][ny] == 0) continue;
+            if (map[nx][ny] == 1 || group[nx][ny] == 0) continue;
 
             // 근데, 중복된것일수도있음.
-            if (map[nx][ny] == 0) {
-                hashSet.add(group[nx][ny]);    
-            }
+            hashSet.add(group[nx][ny]);
         }
 
         for (Integer e : hashSet) {

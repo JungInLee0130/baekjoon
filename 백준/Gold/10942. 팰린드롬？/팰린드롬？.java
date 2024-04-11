@@ -6,7 +6,7 @@ import java.util.*;
 public class Main {
     static int N, M;
     static boolean[][] dp;
-    static int[] str;
+    static String[] str;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -14,9 +14,10 @@ public class Main {
         N = Integer.parseInt(br.readLine()); // 2000
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        str = new int[N + 1]; // 1 ~ N
+        str = new String[N + 1]; // 1 ~ N
+        str[0] = "0";
         for (int i = 1; i <= N; i++) {
-            str[i] = Integer.parseInt(st.nextToken());
+            str[i] = st.nextToken();
         }
 
         M = Integer.parseInt(br.readLine()); // 100만개
@@ -55,15 +56,15 @@ public class Main {
 
         // 2
         for (int i = 1; i <= N - 1; i++) {
-            if (str[i] == str[i + 1]) dp[i][i + 1] = true;
+            if (str[i].equals(str[i + 1])) dp[i][i + 1] = true;
         }
 
         // 3
         for (int i = 2; i < N; i++) { // i + 1 ~ n 길이 (인덱스 기준)
-            for (int j = 1; j <= N - i; j++) { // 길이에따른 범위
+            for (int j = 1; j <= (N - i); j++) { // 길이에따른 범위
                 // 처음 == 끝 (양 끝점 비교)
                 // 처음 + 1 ~ == 끝 - 1 ~ (저장된 dp 사용)
-                if (str[j] == str[j + i] && dp[j + 1][j + i - 1]) {
+                if (str[j].equals(str[j + i]) && dp[(j) + 1][(j + i) - 1]) {
                     dp[j][j + i] = true;
                 }
             }

@@ -23,10 +23,6 @@ public class Main {
 
             for (int i = 1; i <= n; i++) {
                 selected[i] = Integer.parseInt(st.nextToken());
-                if (selected[i] == i) {
-                    isChecked[i] = true; // 자기자신. 이미 체크
-                    result++;
-                }
             }
 
 
@@ -60,7 +56,7 @@ public class Main {
         visited[x] = true;
         dfs(selected[x]);
         // 여기다 result++ 넣으면 사이클 아닌것들도 다 걸림.
-        isChecked[x] = true;
+        isChecked[x] = true; // 사이클 아닌것들도 근데 검사 끝났으니까 ischecked.
         visited[x] = false; // 매번 초기화 해주면 시간초과 난다고함.
     }
     static boolean[] visited;

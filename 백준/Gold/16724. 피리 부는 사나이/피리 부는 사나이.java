@@ -92,26 +92,7 @@ public class Main {
         if (c == 'R') {
             return 2;
         }
-        return -1; // none; // safezone
-    }
-
-    private static void bfs(int x, int y) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x, y});
-        visited = new boolean[N][M];
-        visited[x][y] = true;
-
-        while (!queue.isEmpty()) {
-            int[] poll = queue.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nx = poll[0] + dr[i];
-                int ny = poll[1] + dc[i];
-
-                if (!check(nx,ny)) continue;
-                if (visited[nx][ny]) continue;
-            }
-        }
+        return -1; // none;
     }
 
     private static boolean check(int nx, int ny) {

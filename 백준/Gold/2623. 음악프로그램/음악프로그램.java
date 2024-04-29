@@ -57,10 +57,11 @@ public class Main {
         br.close();
     }
 
-    static ArrayList<Integer> answer = new ArrayList<>();
+    static ArrayList<Integer> answer;
 
     private static void topologiSort() {
         Queue<Integer> queue = new LinkedList<>();
+        answer = new ArrayList<>();
 
         for (int i = 1; i <= N; i++) {
             if (indegree[i] == 0) {

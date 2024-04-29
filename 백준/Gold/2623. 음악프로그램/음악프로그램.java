@@ -87,6 +87,9 @@ public class Main {
             return;
         }
 
-        answer.forEach(e -> System.out.println(e));
+        for (Integer e:answer) {
+            System.out.println(e);
+        }
+        //answer.forEach(e -> System.out.println(e));
     }
 }

@@ -8,17 +8,17 @@ import java.util.stream.IntStream;
 
 public class Main {
     static int T;
-    static int[] parent;
-    static int[] level;
+    static int[] parent, level;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         T = Integer.parseInt(br.readLine());
 
+
         StringBuilder sb = new StringBuilder();
 
-        for (int t = 0; t < T; t++) {
+        while (T-- > 0) {
             int F = Integer.parseInt(br.readLine());
 
             parent = new int[F * 2];
@@ -29,11 +29,10 @@ public class Main {
                 level[i] = 1;
             }
 
+            int idx = 0;
             Map<String, Integer> map = new HashMap<>();
 
-            int idx = 0;
-
-            for (int f = 0; f < F; f++) {  // 10만 이하
+            for (int i = 0; i < F; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
 
                 String a = st.nextToken();
@@ -50,7 +49,6 @@ public class Main {
             }
         }
 
-
         bw.write(sb.toString());
         bw.flush();
         bw.close();
@@ -65,16 +63,15 @@ public class Main {
             parent[y] = x;
             level[x] += level[y];
 
-            level[y] = 1;
+            //level[y] = 1; // 사실 여기 다시 접근할일 없음. 왜 1넣어주는지도 모르겠음.
         }
-
         return level[x];
     }
 
     private static int find(int x) {
-        if (x == parent[x]) {
-            return x;
-        }
+        if (x == parent[x]) return x;
         return parent[x] = find(parent[x]);
     }
+
+
 }

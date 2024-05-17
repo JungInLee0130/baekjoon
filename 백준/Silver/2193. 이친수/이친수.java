@@ -17,7 +17,7 @@ public class Main {
 
         N = Integer.parseInt(br.readLine()); // 자릿수
 
-        fibo = new long[N + 2];
+        fibo = new long[91];
 
         fibo[0] = 0;
         fibo[1] = 1;

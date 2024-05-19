@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 
 public class Main {
     static int N, M;
-    static LinkedList<Integer> linkedList;
+    static int[] array;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -19,10 +19,10 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        linkedList = new LinkedList<>();
+        array = new int[N + 1];
 
         for (int i = 0; i <= N; i++) {
-            linkedList.add(i);
+            array[i] = i;
         }
 
         for (int i = 0; i < M; i++) {
@@ -31,29 +31,18 @@ public class Main {
             int start = Integer.parseInt(st.nextToken());
             int end = Integer.parseInt(st.nextToken());
 
-            ArrayList<Integer> arrayList = new ArrayList<>();
-            for (int j = start; j <= end; j++) {
-                arrayList.add(linkedList.get(j));
-            }
-            Collections.reverse(arrayList);
-
-            int times = end - start + 1;
-            while (times > 0) {
-                linkedList.remove(start);
-                times--;
-            }
-
-            for (int j = start; j <= end; j++) {
-                linkedList.add(j, arrayList.get(j - start));
+            int t = 0;
+            while (t < (end - start + 1) / 2) {
+                int temp = array[start + t];
+                array[start + t] = array[end - t];
+                array[end - t] = temp;
+                t++;
             }
         }
 
-
-        /*linkedList.subList(1, linkedList.size())
-                .forEach(e -> System.out.print(e  + " "));*/
-
-        linkedList.stream().filter(e -> 1 <= e && e <= linkedList.size() - 1)
-                        .forEach(e -> System.out.print(e  + " "));
+        Arrays.stream(array)
+                .filter(e -> 1 <= e && e < array.length)
+                .forEach(e -> System.out.print(e + " "));
 
 
         bw.flush();

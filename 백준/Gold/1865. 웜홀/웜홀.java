@@ -85,9 +85,10 @@ public class Main {
         int[] dist = new int[N + 1]; // 1 ~ N
         Arrays.fill(dist, INF);
         dist[start] = 0;
+        boolean isUpdate = false;
 
         for (int i = 1; i < N; i++) { // 정점 - 1 // 499
-            boolean isUpdate = false;
+            isUpdate = false;
             for (int j = 0; j < graph.size(); j++) { // 간선 // 2700
                 Edge edge = graph.get(j);
 
@@ -106,13 +107,15 @@ public class Main {
             }
         }
 
-        // 음수 가중치 확인
-        for (int i = 0; i < graph.size(); i++) {
-            Edge edge = graph.get(i);
+        if (isUpdate) {
+            // 음수 가중치 확인
+            for (int i = 0; i < graph.size(); i++) {
+                Edge edge = graph.get(i);
 
-            // 한번 더 돌렸는데 더 작은 값이 생김 -> 음수 사이클 존재
-            if (dist[edge.s] != INF && dist[edge.e] > dist[edge.s] + edge.cost) {
-                return true;
+                // 한번 더 돌렸는데 더 작은 값이 생김 -> 음수 사이클 존재
+                if (dist[edge.s] != INF && dist[edge.e] > dist[edge.s] + edge.cost) {
+                    return true;
+                }
             }
         }
 

@@ -52,20 +52,29 @@ public class Main {
         }
 
         for (int i = 1; i <= N; i++) {
-            for (int j = 0; j < enemies[i].size(); j++) {
-                Integer enemy = enemies[i].get(j);
+            if (enemies[i].isEmpty()) {
+                continue;
+            }
+            Integer element = enemies[i].get(0);
 
-                for (int k = 0; k < enemies[enemy].size(); k++) {
-                    //if (i == enemies[enemy].get(k)) continue; // 이런경우는 없지만
-                    friends[i].add(enemies[enemy].get(k));
-                    friends[enemies[enemy].get(k)].add(i);
+            for (int j = 1; j < enemies[i].size(); j++) {
+                Integer f = enemies[i].get(j);
+                if (friends[element].contains(f)) {
+                    continue;
                 }
+                friends[element].add(f);
             }
         }
 
         for (int i = 1; i <= N; i++) {
             for (int j = 0; j < friends[i].size(); j++) {
-                union(i, friends[i].get(j));
+                Integer friend = friends[i].get(j);
+
+                int x = find(i);
+                int y = find(friend);
+                if (x != y) {
+                    union(x, y);
+                }
             }
         }
 
@@ -98,7 +107,7 @@ public class Main {
     }
 
     private static int find(int x) {
-        if (x == parent[x]) return x;
-        return parent[x] = find(parent[x]);
+        if (x != parent[x]) return parent[x] = find(parent[x]);
+        return x;
     }
 }

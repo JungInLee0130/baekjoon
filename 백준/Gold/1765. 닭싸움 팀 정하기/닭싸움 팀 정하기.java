@@ -44,7 +44,6 @@ public class Main {
 
             if (s.equals("F")) {
                 friends[a].add(b);
-                friends[b].add(a);
             } else if (s.equals("E")) {
                 enemies[a].add(b);
                 enemies[b].add(a);
@@ -55,14 +54,14 @@ public class Main {
             if (enemies[i].isEmpty()) {
                 continue;
             }
-            Integer element = enemies[i].get(0);
+            Integer enemy = enemies[i].get(0);
 
             for (int j = 1; j < enemies[i].size(); j++) {
-                Integer f = enemies[i].get(j);
-                if (friends[element].contains(f)) {
+                Integer friend = enemies[i].get(j);
+                if (friends[enemy].contains(friend)) {
                     continue;
                 }
-                friends[element].add(f);
+                friends[enemy].add(friend);
             }
         }
 

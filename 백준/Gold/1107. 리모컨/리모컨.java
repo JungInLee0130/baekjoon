@@ -61,6 +61,7 @@ public class Main {
     static int len;
     static int min;
     private static void dfs(int idx, int number) {
+        if (idx == 6) return;
         // 랜덤 돌림
         for (int i = 0; i < 10; i++) {
             if (!isBroken[i]) {
@@ -70,10 +71,8 @@ public class Main {
 
                 // 최소횟수 구하기
                 min = Math.min(min, count);
-
-                if (idx < 6) {
-                    dfs(idx + 1, nNumber);
-                }
+                
+                dfs(idx + 1, nNumber);
             }
         }
     }

@@ -23,7 +23,7 @@ public class Main {
         len = str.length();
         
         num = new int[len];
-        for (int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < len; i++) {
             num[i] = str.charAt(i) - '0'; // N의 자릿수
         }
         
@@ -36,9 +36,8 @@ public class Main {
             }
         }
 
-        // 100 -> N 이동 : 최소 몇번 눌러야함?
-        // +, - 도 있음
-        // 있는 버튼 중에서 가장 가까운 곳으로 이동 -> - 또는 +로 이동
+        // 문제는 10000 -> 9999 : 6 이 일어날수도있어서 500000까지 다돌려야할듯
+        // 1. 그냥 +, -로 이동하는 경우를 최악의수로 저장
         min = Math.abs(100 - N);
 
         if (N == 100) {
@@ -46,7 +45,9 @@ public class Main {
             return;
         }
 
+        // 6자리
         arr = new int[6];
+        // 시간초과나므로 number을 저장하면서 이동
         dfs(0,0);
 
         System.out.println(min);
@@ -61,17 +62,13 @@ public class Main {
     static int len;
     static int min;
     private static void dfs(int idx, int number) {
-        if (idx == 6) return;
-        // 랜덤 돌림
+        if (idx == 6) return; // 6자리면 return
+        // 그냥 완탐
         for (int i = 0; i < 10; i++) {
             if (!isBroken[i]) {
                 int nNumber = number * 10 + i;
-
                 int count = Math.abs(nNumber - N) + String.valueOf(nNumber).length();
-
-                // 최소횟수 구하기
                 min = Math.min(min, count);
-                
                 dfs(idx + 1, nNumber);
             }
         }

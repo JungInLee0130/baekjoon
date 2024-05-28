@@ -26,7 +26,7 @@ public class Main {
             return this.weight - o.weight;
         }
     }
-    static PriorityQueue<Edge> edges;
+    static ArrayList<Edge> edges;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -41,7 +41,7 @@ public class Main {
                 break;
             }
 
-            edges = new PriorityQueue<>();
+            edges = new ArrayList<>();
 
             // MST : prim, union find
             parent = new int[N];
@@ -61,10 +61,19 @@ public class Main {
                 answer += weight;
             }
 
+
+            // 결국 유형은 크루스칼 : 모든 정점을 최소 비용으로 연결하는 최적 해답 구하기
+            // 위상 정렬 : 순서가 있는 일의 순서 정하기
+            // Collections.sort를 하기위해 Edges에 Comparable 선언 -> 기준을 정해줘야함..
+            Collections.sort(edges);
+            // 엄...Comparable 선언해놓고 edges에 넣으면 당연히 자동정렬안된다...
+            /*for (Edge e:edges) {
+                System.out.println(e.start + " " + e.end + " " + e.weight);
+            }*/
+
             min = 0;
-            while (!edges.isEmpty()) {
-                Edge poll = edges.poll();
-                kruskal(poll);
+            for (int i = 0; i < N; i++) {
+                kruskal(edges.get(i));
             }
 
             System.out.println(answer - min);

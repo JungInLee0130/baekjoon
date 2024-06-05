@@ -20,16 +20,10 @@ public class Main {
         }
 
         int[] dp = new int[k + 1]; // 100까지
-        dp[0] = 1;
-        for (int j = arr[0]; j <= k; j++) {
-            if (j % arr[0] == 0) {
-                dp[j]++;
-            }
-        }
 
+        dp[0] = 1; // 경우의수 넣기위함.
 
-        // dp[k] = dp[k] + dp[k - arr[i]]
-        for (int i = 1; i < n; i++) { // 동전개수
+        for (int i = 0; i < n; i++) { // 동전개수
             for (int j = arr[i]; j <= k; j++) { // 1부터 k까지
                 dp[j] += dp[j - arr[i]];
             }

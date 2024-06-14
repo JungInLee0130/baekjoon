@@ -17,7 +17,7 @@ public class Main {
 
         // 10 -> B진법
 
-        Stack<String> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             int q = N / B;
             int rest = N % B;
@@ -26,18 +26,12 @@ public class Main {
                 break;
             }
 
-            stack.push(convert(rest));
-
+            sb.append(convert(rest));
 
             N = q; // 몫
         }
 
-        StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
-
-        System.out.println(sb.toString());
+        System.out.println(sb.reverse());
 
         bw.flush();
         br.close();

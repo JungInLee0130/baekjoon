@@ -102,58 +102,57 @@ public class Main {
                 boolean isFinished = false;
 
                 // willgo
-                int nbx = curBx + dx[d];
-                int nby = curBy + dy[d];
-                int nrx = curRx + dx[d];
-                int nry = curRy + dy[d];
+                int nbx = curBx;
+                int nby = curBy;
+                int nrx = curRx;
+                int nry = curRy;
 
                 // 파란놈 이동
-                while (true) {
-                    /*if (!isRange(nbx, nby)) {
-                        nbx = nbx - dx[d];
-                        nby = nby - dy[d];
-                        break;
-                    }*/
-                    // 벽이거나 빨간구슬 만나면 -> 구슬만나도 아무문제가 안됨. 다옮긴후 순서 조절임.
-                    if (map[nbx][nby] == '#') {
-                        nbx = nbx - dx[d];
-                        nby = nby - dy[d];
-                        break;
-                    }
+                while (map[nbx + dx[d]][nby + dy[d]] != '#') {
+                    nbx += dx[d];
+                    nby += dy[d];
 
                     // 출구 들어가면 제외
                     if (map[nbx][nby] == 'O') {
                         break;
                     }
-
-                    // 또 이동
-                    nbx = nbx + dx[d];
-                    nby = nby + dy[d];
-
                 }
 
                 // 빨간놈 이동
-                while (true) {
-                    // 벽이거나
-                    if (map[nrx][nry] == '#') {
-                        nrx = nrx - dx[d];
-                        nry = nry - dy[d];
-                        break;
-                    }
+                while (map[nrx + dx[d]][nry + dy[d]] != '#') {
+                    nrx += dx[d];
+                    nry += dy[d];
                     // O면 성공
                     if (map[nrx][nry] == 'O') {
                         isFinished = true;
                         break;
                     }
-
-                    // .이면 계속간다
-                    nrx = nrx + dx[d];
-                    nry = nry + dy[d];
                 }
 
-                // 파란 공이 출구에 들어가버림
+                // 파란 공이 출구에 들어가버림 (좌표 바꾸면안됨) : 파란공 + 빨간공 포함
                 if (map[nbx][nby] == 'O') {
                     continue;
+                }
+
+                // 빨간공 들어가서 끝났음. : 빨간공만 들어감
+                if (isFinished) {
+                    result = poll.cnt + 1;
+                    poll.route.add(d);
+                    for (Integer e:poll.route) {
+                        if (e == 0) {
+                            sb.append("U");
+                        }
+                        if (e == 1) {
+                            sb.append("D");
+                        }
+                        if (e == 2) {
+                            sb.append("R");
+                        }
+                        if (e == 3) {
+                            sb.append("L");
+                        }
+                    }
+                    return;
                 }
 
                 // 둘이 겹치면 현재 좌표 기준으로 더
@@ -190,45 +189,24 @@ public class Main {
                 }
 
 
+                // 이미 방문했음, 이동 안했으면 그대로 유지
                 if (visited[nrx][nry][nbx][nby]) {
                     continue;
                 }
 
-                // 빨간놈 or 파란놈 좌표 바뀜
-                if (!(nbx == curBx && nby == curBy) || !(nrx == curRx && nry == curRy)) {
-                    visited[nrx][nry][nbx][nby] = true;
-                    Marble nMarble = new Marble(nrx, nry, nbx, nby, poll.cnt + 1, new ArrayList<>());
-                    if (!poll.route.isEmpty()) {
-                        copyArray(nMarble.route, poll.route);
-                    }
-                    nMarble.route.add(d);
-
-                    // 빨간공이 출구에 들어감
-                    if (isFinished) {
-                        result = nMarble.cnt;
-                        for (Integer e : nMarble.route) {
-                            if (e == 0) {
-                                sb.append("U");
-                            } else if (e == 1) {
-                                sb.append("D");
-                            } else if (e == 2) {
-                                sb.append("R");
-                            } else {
-                                sb.append("L");
-                            }
-                        }
-                        return;
-                    }
-                    que.add(nMarble);
+                // 이동 했음
+                visited[nrx][nry][nbx][nby] = true;
+                Marble nMarble = new Marble(nrx, nry, nbx, nby, poll.cnt + 1, new ArrayList<>());
+                if (!poll.route.isEmpty()) {
+                    copyArray(nMarble.route, poll.route);
                 }
+                nMarble.route.add(d);
+                que.add(nMarble);
+
             }
         }
 
         result = -1;
-    }
-
-    private static boolean isRange(int x, int y) {
-        return 1 <= x && x <= R && 1 <= y && y <= C;
     }
 
     private static void copyArray(ArrayList<Integer> newArray, ArrayList<Integer> original) {

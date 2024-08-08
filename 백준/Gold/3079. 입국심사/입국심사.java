@@ -1,53 +1,56 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.*;
+import java.io.*;
 import java.util.*;
+
 public class Main {
-    static int n;
-    static long m, max;
-    static int [] arr;
-    static long result = Long.MAX_VALUE;
+    static long N, M;
+    static long[] time;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
- 
-        String[] s = br.readLine().split(" ");
-        n = Integer.parseInt(s[0]);
-        m = Integer.parseInt(s[1]);
- 
-        arr = new int[n];
-        for(int i=0; i<n; i++){
-            arr[i] = Integer.parseInt(br.readLine());
-            max = Math.max(max,arr[i]);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Long.parseLong(st.nextToken()); // 10만 이하
+        M = Long.parseLong(st.nextToken()); // 10억 이하
+
+        time = new long[(int) N];
+        for (int i = 0; i < N; i++) {
+            time[i] = Long.parseLong(br.readLine());
         }
-        Arrays.sort(arr);
- 
-        solve();
- 
-        System.out.println(result);
+
+        Arrays.sort(time);
+
+        binarySearch();
+
+        System.out.println(answer);
+
+        bw.flush();
+        br.close();
+        bw.close();
     }
- 
-    private static void solve(){
-        long low = 0;
-        long high = m * max;
- 
-        while(low<=high){
-            long mid = (low+high)/2;
-            long sum = 0;
-            for(long index: arr){
-                long count = mid/index;
- 
-                if(sum>=m){
+
+    private static long answer;
+    private static void binarySearch() {
+        long left = 0;
+        long right = M * time[(int) (N - 1)]; // 최대 걸리는 시간
+
+        while (left <= right) {
+            long mid = (left + right) / 2;
+
+            long count = 0;
+            for (long e : time) {
+                count += mid / e;
+                if (count >= M) {
                     break;
                 }
-                sum+=count;
             }
-            if(sum>=m){
-                high = mid-1;
-                result = Math.min(mid,result);
-            }
-            else{
-                low = mid+1;
+
+            if (count >= M) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
             }
         }
+        answer = Math.max(left, right);
     }
 }

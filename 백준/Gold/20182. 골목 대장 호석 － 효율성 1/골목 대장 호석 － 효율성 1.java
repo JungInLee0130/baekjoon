@@ -55,78 +55,52 @@ public class Main {
             graph.get(s).add(new Point(e, v));
             graph.get(e).add(new Point(s, v));
         }
-
-        // 비용정함
-        //System.out.println(binarySearch());
+        
         System.out.println(dijk());
 
         bw.flush();
         br.close();
         bw.close();
     }
-
-    private static int minValue = Integer.MAX_VALUE;
-    private static int binarySearch() {
-        int left = 1;
-        int right = 2_000_000;
-        int answer = -1;
-
-        while (left <= right) {
-            int mid = (left + right) / 2;
-
-            // 이동가능 : 비용 줄임
-            /*if (dijk(mid)) {
-                right = mid - 1;
-            }
-            else{ // 이동 불가 : 비용 늘림
-                left = mid + 1;
-            }*/
-        }
-
-        if (minValue > 2_000_000) {
-            return answer;
-        }
-        return minValue;
-    }
-
     private static final int INF = Integer.MAX_VALUE;
-    private static int[] cost;
+    private static int[] shy;
     private static int dijk() {
         PriorityQueue<Point> pq = new PriorityQueue<>(); // 비용기준으로 내림차순
         pq.add(new Point(A, 0, 0)); // 출발지, 비용, 수치심
-        cost = new int[N + 1];
-        Arrays.fill(cost, INF);
-        cost[A] = 0; // 초기화
+        shy = new int[N + 1];
+        Arrays.fill(shy, INF);
+        shy[A] = 0; // 초기화
 
         while (!pq.isEmpty()) {
             Point poll = pq.poll();
 
             int start = poll.p;
+            int curCost = poll.v;
+            int curShy = poll.shy;
 
             if (start == B) {
-                minValue = cost[B];
-                return minValue;
-                //return true;
+                return shy[B];
             }
 
-            if (poll.shy > cost[poll.p]) continue;
+            // 현재 수치심이 더 큼
+            if (curShy > shy[start]) continue;
 
-            for (Point endPoint :graph.get(poll.p)) {
+            for (Point endPoint :graph.get(start)) {
                 int end = endPoint.p;
-                int value = endPoint.v;
+                int cost = endPoint.v;
 
-                // 더한 값이 mid 초과인경우 : 걸러냄
-                if (cost[start] + value > C) continue;
+                // 비용 : 더한 값이 C 초과인경우 : 걸러냄
+                if (curCost + cost > C) continue;
 
-                // end 수치심이 더 낮을 경우
-                if (cost[end] <= Math.max(cost[start], value)) continue;
+                // 수치심 : end 수치심이 더 낮을 경우
+                if (shy[end] <= Math.max(shy[start], cost)) continue;
 
-                cost[end] = Math.max(cost[start], value);
-                pq.add(new Point(end, cost[end], cost[end]));
+                // 더 클경우 : 갱신
+                shy[end] = Math.max(shy[start], cost);
+                pq.add(new Point(end, curCost + cost, shy[end]));
             }
         }
 
         return -1;
-        //return false;
     }
 }

@@ -3,8 +3,8 @@ import java.util.*;
 
 public class Main {
     static int N;
-    static long K;
-    static long[] levels;
+    static int K;
+    static int[] levels;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -12,13 +12,13 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
-        K = Long.parseLong(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        levels = new long[N];
-        long left = 0;
-        long right = 0;
+        levels = new int[N];
+        int left = 0;
+        int right = 0;
         for (int i = 0; i < N; i++) {
-            levels[i] = Long.parseLong(br.readLine());
+            levels[i] = Integer.parseInt(br.readLine());
         }
 
         Arrays.sort(levels);
@@ -26,7 +26,7 @@ public class Main {
         left = levels[0];
         right = levels[N - 1] + K;
 
-        long answer = sol(left,right);
+        int answer = sol(left,right);
 
         System.out.println(answer);
 
@@ -36,15 +36,15 @@ public class Main {
         bw.close();
     }
 
-    private static long sol(long left, long right) {
+    private static int sol(int left, int right) {
         return binarySearch(left, right);
     }
 
-    private static long binarySearch(long left, long right) {
-        long answer = 0;
+    private static int binarySearch(int left, int right) {
+        int answer = 0;
 
         while (left <= right) {
-            long mid = (left + right) / 2;
+            int mid = (left + right) / 2;
 
             if (getK(mid) > K) {
                 right = mid - 1;
@@ -58,7 +58,7 @@ public class Main {
         return answer;
     }
 
-    private static long getK(long mid) {
+    private static long getK(int mid) {
         long value = 0;
         for (int i = 0; i < N; i++) {
             if (mid > levels[i]) {

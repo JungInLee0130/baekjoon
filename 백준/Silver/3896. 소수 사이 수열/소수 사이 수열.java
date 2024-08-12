@@ -10,7 +10,7 @@ public class Main {
 
         T = Integer.parseInt(br.readLine());
 
-        //eratos();
+        eratos();
 
 
         StringBuilder sb = new StringBuilder();
@@ -29,12 +29,17 @@ public class Main {
         bw.close();
     }
 
+    private static boolean[] isPrime;
     private static void eratos() {
         prime = new boolean[1299710]; // 1 ~ 1299709
+        isPrime = new boolean[1299710];
 
         for (int i = 2; i < 1299710; i++) {
-            for (int j = i; 2 < i * j && i * j < 1299710; j++) {
-                //prime[i * j]
+            if (!prime[i]) {
+                isPrime[i] = true;
+                for (int j = i; 2 < i * j && i * j < 1299710; j++) {
+                    prime[i * j] = true;
+                }
             }
         }
     }
@@ -43,8 +48,8 @@ public class Main {
         // 소수부터 시작
         // num보다 작은
         // num보다 큰 소수까지
-        if (isPrime(num)) return 0;
-        
+        if (isPrime[num]) return 0;
+
         int left = getDownPrime(num);
         int right = getUpPrime(num);
 
@@ -61,7 +66,7 @@ public class Main {
 
         while (left <= right) {
             // 소수이면
-            if (isPrime(left)) {
+            if (isPrime[left]) {
                 return left;
             }
             else{ // 아니면
@@ -78,7 +83,7 @@ public class Main {
 
         while (left <= right) {
             // 소수임
-            if (isPrime(right)) {
+            if (isPrime[right]) {
                 return right;
             }
             else{ // 소수 아님
@@ -87,15 +92,5 @@ public class Main {
         }
 
         return 0;
-    }
-
-    private static boolean isPrime(int mid) {
-        int count = 0;
-        for (int i = 2; i <= Math.sqrt(mid); i++) {
-            if (mid % i == 0) {
-                count++;
-            }
-        }
-        return count == 0; // count가 없으면 소수
     }
 }

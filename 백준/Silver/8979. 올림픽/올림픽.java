@@ -29,11 +29,11 @@ public class Main {
             public int compare(int[] o1, int[] o2){
                 if (o1[1] == o2[1]){
                     if (o1[2] == o2[2]) {
-                        return o1[3] - o2[3];
+                        return o2[3] - o1[3];
                     }
-                    return o1[2] - o2[2];
+                    return o2[2] - o1[2];
                 }
-                return o1[1] - o2[1];
+                return o2[1] - o1[1];
             }
         });
 
@@ -74,6 +74,7 @@ public class Main {
         }
 
         for (int i = 0; i < N; i++) {
+            //System.out.println(medals[i][4]);
             if (medals[i][0] == K) {
                 System.out.println(medals[i][4]);
                 break;

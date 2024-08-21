@@ -3,7 +3,7 @@ import java.util.*;
 class Solution {
     static int N;
     static int maxTime = 0;
-    static int[] answer;
+    static int answer;
     public int solution(int[][] jobs) {
         N = jobs.length;
         
@@ -19,19 +19,11 @@ class Solution {
         getTotalTime(jobs);
         
         
-        return cal();
-    }
-    
-    static int cal(){
-        int sum = 0;
-        for (int i = 0; i < N; i++){
-            sum += answer[i];
-        }
-        return sum / N;
+        return answer / N;
     }
     
     static void getTotalTime(int[][] jobs){
-        answer = new int[N];
+        answer = 0;
         
         PriorityQueue<Job> pq = new PriorityQueue<>(); // 오름차순
         
@@ -42,14 +34,14 @@ class Solution {
                 pq.add(new Job(idx, jobs[idx][0], jobs[idx][1]));
                 idx++;
             }
-            // jobs[idx][0]이 더 크면
+            
             if (pq.isEmpty()){
                 time = jobs[idx][0];
             }
             else{
                 Job curJob = pq.poll();
                 time += curJob.running;
-                answer[curJob.num] = time - curJob.start;
+                answer += time - curJob.start;
             }
         }
     }

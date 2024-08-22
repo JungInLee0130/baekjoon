@@ -13,16 +13,11 @@ public class Main {
         T = Integer.parseInt(st.nextToken());
 
         liquid = new int[N][2];
-        int lsum = 0;
-        int rsum = 0;
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
 
             liquid[i][0] = Integer.parseInt(st.nextToken());
             liquid[i][1] = Integer.parseInt(st.nextToken());
-
-            lsum += liquid[i][0];
-            rsum += liquid[i][1];
         }
 
         int answer = binarySearch();
@@ -38,6 +33,7 @@ public class Main {
         while (left <= right) {
             int mid = (left + right) >> 1;
 
+            // 1. mid가 Li <= mid <= Ri에 속하는지
             boolean firstCondition = isRange(mid);
 
             if (!firstCondition){
@@ -45,6 +41,7 @@ public class Main {
                 continue;
             }
 
+            // 2. 합이 T가 나올수있는지
             int sum = getSum(mid);
 
             if (sum == T){
@@ -68,12 +65,12 @@ public class Main {
     private static int getSum(int S) {
         int rsum = 0;
         for (int i = 0; i < N; i++) {
-            rsum += Math.min(liquid[i][1], S);
-            /*if (S >= liquid[i][1]) {
+            // 범위안에있는거여야함.
+            if (S >= liquid[i][1]) {
                 rsum += liquid[i][1];
             } else if (liquid[i][0] <= S && S <= liquid[i][1]) {
                 rsum += S;
-            }*/
+            }
         }
 
         int lsum = 0;
@@ -85,7 +82,7 @@ public class Main {
             return lsum;
         }
         else if (lsum <= T && T <= rsum){
-            return T;
+            return T; // T가능
         }
         // T > rsum
         else{

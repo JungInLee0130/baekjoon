@@ -68,11 +68,12 @@ public class Main {
     private static int getSum(int S) {
         int rsum = 0;
         for (int i = 0; i < N; i++) {
-            if (S >= liquid[i][1]) {
+            rsum += Math.min(liquid[i][1], S);
+            /*if (S >= liquid[i][1]) {
                 rsum += liquid[i][1];
             } else if (liquid[i][0] <= S && S <= liquid[i][1]) {
                 rsum += S;
-            }
+            }*/
         }
 
         int lsum = 0;

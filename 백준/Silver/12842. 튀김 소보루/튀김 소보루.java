@@ -21,24 +21,58 @@ public class Main {
             seconds[i] = Integer.parseInt(br.readLine()); // 1000이하
         }
 
+        int time = binarySearch(0, S);
+
+        cal(time);
+
+        // -1 나오는 경우는 없음.
+        System.out.println(index);
+
+    }
+
+    private static int index;
+
+    private static void cal(int time) {
         int t = 0;
-        int count = 0;
-        int idx = 0;
         while (S > 0) {
             for (int i = 0; i < M; i++) {
                 if (t % seconds[i] == 0) {
                     S--;
-                    idx = i;
                     if (S == 0) {
-                        break;
+                        index = i + 1;
+                        return;
                     }
                 }
             }
             t++;
         }
+    }
 
-        // -1 나오는 경우는 없음.
-        System.out.println(idx + 1);
+    private static int binarySearch(int left, int right) {
+        int answer = 0;
 
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+
+            int count = getCount(mid);
+
+            if (count >= S) {
+                answer = mid;
+                right = mid - 1;
+            }else {
+                left = mid + 1;
+            }
+        }
+
+        return answer; // 1~M
+    }
+
+    private static int getCount(int T) {
+        int count = M;
+        for (int i = 0; i < M; i++) {
+            count += T / seconds[i];
+        }
+
+        return count;
     }
 }

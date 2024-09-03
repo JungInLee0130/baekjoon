@@ -14,10 +14,8 @@ public class Main {
 
         HashSet<String> set = new HashSet<>();
         for (int i = 0; i < len; i++) { // idx // n
-            StringBuilder sb = new StringBuilder();
             for (int j = i; j < len; j++) { // 끝까지 // n, n-1, n-2, n-3,....,1
-                sb.append(S.charAt(j));
-                set.add(sb.toString());
+                set.add(S.substring(i, j + 1));
             }
         }
 

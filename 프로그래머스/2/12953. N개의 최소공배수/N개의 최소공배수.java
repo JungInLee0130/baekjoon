@@ -19,8 +19,8 @@ class Solution {
     
     public int getGcd(int n1, int n2){
         // a > b
-        int a = n1 > n2 ? n1 : n2;
-        int b = n1 > n2 ? n2 : n1;
+        int a = Math.max(n1,n2);
+        int b = Math.min(n1,n2);
         
         int r = 0;
         while (b != 0){ // 나누는 수가 0이 아닐때 까지

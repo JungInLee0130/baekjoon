@@ -73,21 +73,20 @@ public class Main {
                 int ny = poll.y + dy[d];
 
                 if (!isRange(nx, ny)) continue;
-
-                // 낮, 개수 > 0, 1, !visited
-                if (poll.isDay && poll.k > 0 && map[nx][ny] == 1 && !visited[nx][ny][poll.k - 1]) {
-                    int nk = poll.k - 1;
-                    visited[nx][ny][nk] = true;
-                    que.add(new Point(nx, ny, poll.cnt + 1, nk, !poll.isDay)); // 밤으로
+                
+                if (poll.k > 0 && map[nx][ny] == 1 && !visited[nx][ny][poll.k - 1]) {
+                    if (poll.isDay){
+                        int nk = poll.k - 1;
+                        visited[nx][ny][nk] = true;
+                        que.add(new Point(nx, ny, poll.cnt + 1, nk, !poll.isDay)); // 밤으로    
+                    }
+                    else{
+                        que.add(new Point(poll.x, poll.y, poll.cnt + 1, poll.k, !poll.isDay));    
+                    }
                 }
-                // 0, !visited
                 else if (map[nx][ny] == 0 && !visited[nx][ny][poll.k]){
                     visited[nx][ny][poll.k] = true;
                     que.add(new Point(nx, ny, poll.cnt + 1, poll.k, !poll.isDay)); // 낮으로
-                }
-
-                else if (!poll.isDay && poll.k > 0 && map[nx][ny] == 1 && !visited[nx][ny][poll.k - 1]){
-                    que.add(new Point(poll.x, poll.y, poll.cnt + 1, poll.k, !poll.isDay));
                 }
             }
         }

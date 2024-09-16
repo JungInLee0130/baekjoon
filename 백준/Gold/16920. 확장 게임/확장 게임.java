@@ -1,127 +1,138 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
+import java.util.stream.Collectors;
 
 public class Main {
-	static int N, M, P;
-	static int[] maximumMove, area;
-	static char[][] map;
-	static List<Point>[] start;
-	static Queue<Point> q;
+    static int N, M, P;
+    static char[][] map;
+    static int[] p;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-	static final char BLANK = '.';
-	static final char WALL = '#';
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	static int[] dx = {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        P = Integer.parseInt(st.nextToken());
 
-	static class Point {
-		int x;
-		int y;
+        map = new char[N][M];
+        st = new StringTokenizer(br.readLine());
 
-		Point(int a, int b) {
-			x = a;
-			y = b;
-		}
-	}
+        p = new int[P + 1];
+        for (int i = 1; i <= P; i++) {
+            p[i] = Integer.parseInt(st.nextToken());
+        }
 
-	public static void main(String[] args) throws Exception {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		String[] splitedLine = in.readLine().split(" ");
+        startList = new ArrayList<>();
+        for (int i = 0; i < N; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < M; j++) {
+                map[i][j] = str.charAt(j);
+                if ('1'<= map[i][j] && map[i][j] <= '9') {
+                    startList.add(new Point(map[i][j] - '0', i, j, 0));
+                }
+            }
+        }
 
-		N = stoi(splitedLine[0]);
-		M = stoi(splitedLine[1]);
-		P = stoi(splitedLine[2]);
-		maximumMove = new int[P + 1];
-		area = new int[P + 1];
-		map = new char[N][M];
-		start = new List[P + 1];
+        // 순서대로 p만큼 확장.
+        bfs();
 
-		for (int i = 0; i < P + 1; ++i)
-			start[i] = new ArrayList<>();
+        int[] answer = new int[P + 1];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if ('1' <= map[i][j] && map[i][j] <= '9') {
+                    answer[map[i][j] - '0']++;
+                }
+            }
+        }
 
-		splitedLine = in.readLine().split(" ");
-		for (int i = 1; i <= P; ++i)
-			maximumMove[i] = stoi(splitedLine[i - 1]);
+        for (int i = 1; i <= P; i++) {
+            System.out.print(answer[i] + " ");
+        }
 
-		for (int i = 0; i < N; ++i) {
-			String s = in.readLine();
-			for (int j = 0; j < M; ++j) {
-				map[i][j] = s.charAt(j);
-				if ('1' <= map[i][j] && map[i][j] <= '9')
-					start[map[i][j] - '0'].add(new Point(i, j));
-			}
-		}
+        bw.flush();
+        bw.close();
+        br.close();
+    }
 
-		q = new ArrayDeque<>();
-		// 1부터 모든 시작점을 넣어준다.
-		for (int i = 1; i <= P; ++i)
-			for (Point p : start[i])
-				q.add(p);
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
 
-		simulation();
+    static final int TOTAL_MAX = 2000;
+    static boolean[][] visited;
+    private static void bfs() {
+        Queue<Point> que = new LinkedList<>();
+        visited = new boolean[N][M];
+        Collections.sort(startList);
 
-		StringBuilder sb = new StringBuilder();
+        // 처음부터 다 놓는게 아니라 같은수만 골라낸다.
+        for (Point start:startList) {
+            visited[start.x][start.y] = true;
+            que.add(start);
+        }
 
-		// 각 플레이어의 성의 갯수를 찾는다.
-		for (int i = 0; i < N; ++i) {
-			for (int j = 0; j < M; ++j) {
-				if ('1' <= map[i][j] && map[i][j] <= '9')
-					area[map[i][j] - '0']++;
-			}
-		}
+        // 같은 수는 동시에 진행시켜야한다.
+        while (!que.isEmpty()) {
+            Queue<Point> nq = new LinkedList<>();
+            Point curPoll = que.poll();
+            nq.add(curPoll); // num
+            // que에서 같은것만 뽑아서 넣어줌.
 
-		for (int i = 1; i <= P; ++i)
-			sb.append(area[i]).append(" ");
+            while (!que.isEmpty() && que.peek().num == curPoll.num) {
+                Point samePoll = que.poll();
+                nq.add(samePoll);
+            }
 
-		System.out.println(sb);
-	}
+            while (!nq.isEmpty()) {
+                Point poll = nq.poll();
 
-	private static void simulation() {
-		while (!q.isEmpty()) {
-			Point p = q.poll();
-			int playerNum = map[p.x][p.y] - '0'; // 현재 진행중인 플레이어
-			int maxMove = maximumMove[playerNum]; // 현재 플레이어의 최대 이동가능 범위
+                int step = p[poll.num]; // 가로 세로 합해서 step 칸 이동가능
 
-			Queue<Point> nextQ = new ArrayDeque<>();
+                for (int d = 0; d < 4; d++) {
+                    int nx = poll.x + dx[d];
+                    int ny = poll.y + dy[d];
 
-			int[][] visit = new int[N][M];
-			// 같은 플레이어의 성을 모두 넣는다.
-			while (!q.isEmpty() && map[q.peek().x][q.peek().y] == map[p.x][p.y]) {
-				visit[q.peek().x][q.peek().y] = 1;
-				nextQ.add(q.poll());
-			}
+                    if (isRange(nx, ny) && map[nx][ny] == '.' && !visited[nx][ny]) {
+                        visited[nx][ny] = true;
+                        map[nx][ny] = (char) (poll.num + '0');
 
-			nextQ.add(p);
-			visit[p.x][p.y] = 1;
-			while (!nextQ.isEmpty()) { // 특정 플레이어의 성을 최대 범위까지 확장한다.
-				Point cur = nextQ.poll();
-				for (int d = 0; d < 4; ++d) {
-					int nextX = cur.x + dx[d];
-					int nextY = cur.y + dy[d];
-					if (isInRange(nextX, nextY) && visit[nextX][nextY] == 0 && map[nextX][nextY] == BLANK) {
-						visit[nextX][nextY] = visit[cur.x][cur.y] + 1;
-						map[nextX][nextY] = map[cur.x][cur.y];
-						if (visit[nextX][nextY] == maxMove + 1) // 최대 범위까지 왔으면, 다른 플레이어가 진행 후 진행할 수 있다.
-							q.add(new Point(nextX, nextY));
-						else
-							nextQ.add(new Point(nextX, nextY)); // 이동 가능횟수가 남아있다면, 현재 턴에 계속 확장한다.
-					}
-				}
-			}
-		}
-	}
+                        // 다음 step이 들어가면 안됨.
+                        if (poll.step + 1 < step) {
+                            nq.add(new Point(poll.num, nx, ny, poll.step + 1));
+                        } else {
+                            que.add(new Point(poll.num, nx, ny, 0));
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	private static boolean isInRange(int nextX, int nextY) {
-		if (0 <= nextX && nextX < N && 0 <= nextY && nextY < M)
-			return true;
-		return false;
-	}
+    private static boolean isRange(int nx, int ny) {
+        return 0 <= nx && nx <= N - 1 && 0 <= ny && ny <= M - 1;
+    }
 
-	private static int stoi(String s) {
-		return Integer.parseInt(s);
-	}
+    static class Point implements Comparable<Point>{
+        int num; // castle num
+        int x;
+        int y;
+
+        int step;
+
+        public Point(int num, int x, int y, int step) {
+            this.num = num;
+            this.x = x;
+            this.y = y;
+            this.step = step;
+        }
+
+        @Override
+        public int compareTo(Point o) {
+            return Integer.compare(this.num, o.num);
+        }
+    }
+    static List<Point> startList;
 }

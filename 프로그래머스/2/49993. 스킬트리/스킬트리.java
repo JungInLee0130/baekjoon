@@ -3,54 +3,25 @@ class Solution {
     static int n, m;
     public int solution(String skill, String[] skill_trees) {
         int answer = 0;
-        
-        n = skill.length();
-        
-        Set<Character> treeSet = new LinkedHashSet<>();
-        
-        for (int i = 0; i < n; i++){
-            treeSet.add(skill.charAt(i)); // 각 스킬들 담음.
-        }
-        
-        m = skill_trees.length;
-        
-        List<Set<Character>> setList = new ArrayList<>();
-        
-        for (int i = 0 ; i < m; i++){
-            setList.add(new LinkedHashSet<>());
-        }
-        
-        for (int i = 0; i < m; i++){
-            String oneSkill = skill_trees[i];
-            int oneSkillLen = oneSkill.length();
-            
-            for (int j = 0; j < oneSkillLen; j++){
-                char charSkill = oneSkill.charAt(j);
-                
-                if (treeSet.contains(charSkill)){
-                    setList.get(i).add(charSkill); // 해당하는 스킬들만 뽑아서 담음.
-                }
-            }
-        }
-        
-        List<Character> cs = new ArrayList<>();
-        
-        for(Character c:treeSet){
-            cs.add(c);
-        }
 
-    
-        for (int i = 0; i < m; i++){
-            List<Character> es = new ArrayList<>();
+        n = skill.length();
+
+        m = skill_trees.length;
+
+
+        for (int i = 0; i < m; i++){            
+            // Skill 문자를 제외한 문자 치환
+            // 입출력 예 1 을 예로 들면
+            // CBD를 제외한 문자를 모두 지움.
+            // 이거 Set으로 추출한거랑 결과 같네.
+            String excludeSkill = skill_trees[i].replaceAll("[^" + skill +"]", "");
             
-            for (Character c : setList.get(i)){
-                es.add(c);
-            }
-            
+            int elen = excludeSkill.length();
+
             int idx = 0;
             boolean isOk = true;
-            while (idx < cs.size() && idx < es.size()){
-                if (cs.get(idx) != es.get(idx)){
+            while (idx < n && idx < elen){
+                if (skill.charAt(idx) != excludeSkill.charAt(idx)){
                     isOk = false;
                     break;
                 }
@@ -60,7 +31,7 @@ class Solution {
                 answer++;
             }
         }
-        
+
         return answer;
     }
 }

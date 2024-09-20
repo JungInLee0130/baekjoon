@@ -52,16 +52,26 @@ class Solution {
         List<Character> tmpOpers = new ArrayList<>(opers);
         
         while (tmpOpers.size() > 0){
-            int maxPriority = 0;
-            for (int i = 0; i < tmpOpers.size(); i++){
-                maxPriority = Math.max(getPriority(tmpOpers.get(i)), maxPriority);
+            int priority = 0;
+            for (int k = 0; k < 3; k++){
+                char oper = op[k]; // 우선순위 연산자
+                for (int i = 0; i < tmpOpers.size(); i++){
+                    char aOper = tmpOpers.get(i); // 비교 연산자
+                    if (oper == aOper){ // 같으면 있는거
+                        priority = k;
+                        break;
+                    }
+                }
             }
             
+            char realOper = op[priority];
+            
             for (int i = 0; i < tmpOpers.size(); i++){
-                if (getPriority(tmpOpers.get(i)) == maxPriority){
-                    tmpNums.add(i, 
-                                calc(tmpNums.remove(i), tmpNums.remove(i),
-                                    tmpOpers.remove(i)));
+                char aOper = tmpOpers.get(i);
+                if (realOper == aOper){ // 같으면 operation
+                    tmpNums.add(i,
+                               calc(tmpNums.remove(i), tmpNums.remove(i),
+                                   tmpOpers.remove(i)));
                     break;
                 }
             }

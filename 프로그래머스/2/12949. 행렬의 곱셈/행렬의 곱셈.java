@@ -11,13 +11,6 @@ class Solution {
         
         answer = new int[A][D];
         
-        for (int j = 0; j < B; j++){
-            answer[0][0] += arr1[0][j] * arr2[j][0];
-        }
-        
-        for (int j = 0; j < B; j++){
-            answer[0][1] += arr1[0][j] * arr2[j][1];
-        }
         
         for (int i = 0; i < A; i++){
             for (int j = 0; j < D; j++){

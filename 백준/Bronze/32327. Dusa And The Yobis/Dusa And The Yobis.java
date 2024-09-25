@@ -1,28 +1,26 @@
 import java.awt.*;
 import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
-    static BigInteger N;
+    static int N, M;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        N = new BigInteger(br.readLine());
+        N = Integer.parseInt(br.readLine());
 
         while (true){
-            BigInteger num = new BigInteger(br.readLine());
+            int num = Integer.parseInt(br.readLine());
 
-            if (N.compareTo(num) <= 0){
+            if (N <= num){
+                System.out.println(N);
                 break;
             }
-            N = N.add(num);
+            N += num;
         }
-
-        System.out.println(N);
 
         bw.flush();
         bw.close();

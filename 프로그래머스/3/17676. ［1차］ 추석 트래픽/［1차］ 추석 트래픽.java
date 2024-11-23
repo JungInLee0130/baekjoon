@@ -4,7 +4,7 @@ class Solution {
     static double second;
     static List<Traffic> timelist;
     static int lineN;
-    static class Traffic implements Comparable<Traffic>{
+    static class Traffic{
         double start;
         double end;
         
@@ -13,35 +13,16 @@ class Solution {
             this.end = end;
         }
         
-        @Override
-        public int compareTo(Traffic t){
-            double sub = this.start - t.start;
-            
-            if (sub > 0){
-                return 1;
-            }
-            else if (sub < 0){
-                return -1;
-            }
-            else{
-                double subEnd = this.end - t.end;
-                if (subEnd > 0){
-                    return 1;
-                }
-                else if (subEnd < 0){
-                    return -1;
-                }
-                else{
-                    return 0;
-                }
-            }
-        }
+        // 정렬은 할필요가 없을거같음.
     }
     public int solution(String[] lines) {
+        // lines : 응답완료 시간을 기준으로 오름차순으로 정렬되어있음.
+        // 2016-09-15일만 포함.
         lineN = lines.length;
         
         timelist = new ArrayList<>();
         
+        // 1. 시간 -> double로
         for (int i = 0; i < lineN; i++){
             times = lines[i].split(" ");
 
@@ -54,8 +35,7 @@ class Solution {
                                       originalSecond));
         }
         
-        //Collections.sort(timelist);
-        
+        // 종료시간 + 1 > 시작시간인것들의 개수 찾기
         List<Integer> countlist = new ArrayList<>();
         int answer = 1;
         
@@ -66,7 +46,8 @@ class Solution {
                 double start = timelist.get(j).start;
                 
                 // 1초기간재고
-                if (curEnd + 1 > start){
+                // 5.001 < 5.002
+                if (start < curEnd + 1){
                     count++;
                 }
             }

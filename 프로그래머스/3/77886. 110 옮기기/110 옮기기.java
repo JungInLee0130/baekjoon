@@ -26,15 +26,14 @@ class Solution {
                 count = 0;
                 for (int j = len - 1; j >= 0; j--){
                     if (sb.length() - 2 <= j) continue;
-                    if (j <= len - 3 && sb.charAt(j) == '1' 
+                    if (sb.charAt(j) == '1' 
                         && sb.charAt(j + 1) == '1' 
                         && sb.charAt(j + 2) == '0'){ // 110일때
-                        if (j == len - 3){
-                            sb.delete(j, sb.length());
-                        }
-                        else{
+                        
+                        
+                        
                             sb.delete(j, j + 3); // 삭제    
-                        }
+                        
                         count++;
                     }
                 }

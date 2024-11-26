@@ -13,24 +13,20 @@ class Solution {
             
             while (true){
                 
+                // 일단 같아도 최대값을 구해야하기때문에 계속 돌려야함.
                 if (leftSum == rightSum){
                     max = Math.max(leftSum, max);
                 }
                 
-                if (leftSum >= rightSum){
-                    ++right;
-                    if (right > N - 1){
-                        break;
-                    }
-                    rightSum += cookie[right];
+                if (leftSum >= rightSum && right < N - 1){
+                    rightSum += cookie[++right];
                 }
                 
-                else if (rightSum >= leftSum){ // rightSum > leftSum
-                    --left;
-                    if (left < 0){
-                        break;
-                    }
-                    leftSum += cookie[left];
+                else if (rightSum >= leftSum && left > 0){ // rightSum > leftSum
+                    leftSum += cookie[--left];
+                }
+                else{ // 구간이 맞징낳을때를 따로 빼줌.
+                    break;
                 }
             }
         }

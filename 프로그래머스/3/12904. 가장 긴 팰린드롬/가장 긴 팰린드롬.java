@@ -6,13 +6,16 @@ class Solution
     public int solution(String s)
     {
         N = s.length();
+        
+        // 한자릿수
         if (N == 1) return 1;
         
+        // 두자릿수
         if (N == 2){
             if (s.charAt(0) == s.charAt(1)){
-                return 2;
+                return 2; // 같으면 2
             }
-            return 1;
+            return 1; // 다르면 1... 테케 18번임
         }
         
         StringBuilder sb = new StringBuilder();
@@ -24,6 +27,7 @@ class Solution
         
         int max = 1;
         
+        // 1. aba <- 이런 케이스
         for (int i = 1; i <= N - 2; i++){
             int leftIdx = i - 1;
             int rightIdx = i + 1;
@@ -48,6 +52,7 @@ class Solution
             }
         }
 
+        // 2. 1번케이스를 두번결합 abaaba or abba 같은 경우
         for (int i = 1; i <= N - 2; i++){
             int leftIdx = i;
             int rightIdx = i + 1;
@@ -73,6 +78,7 @@ class Solution
         }
         
         
+        // 양쪽끝에 존재하는 경우
         if (sb.charAt(0) == sb.charAt(1)){
             max = Math.max(max, 2);
         }

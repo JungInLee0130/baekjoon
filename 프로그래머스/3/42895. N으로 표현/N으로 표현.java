@@ -59,13 +59,13 @@ class Solution {
                 int num = Integer.parseInt(sb.toString());
                 if (num <= 32000) numbers.add(num);
             }
-        }
-        
-        for (int i = 1; i <= 8; i++){
-            if (list.get(i).contains(number)){
+            
+            if (numbers.contains(number)){
                 return i;
             }
         }
+        
+        
         return -1;
     }
 }

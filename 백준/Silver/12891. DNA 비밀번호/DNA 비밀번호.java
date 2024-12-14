@@ -4,7 +4,6 @@ import java.util.*;
 public class Main {
     static int S, P;
     static String str;
-    static int A, C, G, T;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -35,18 +34,19 @@ public class Main {
         curMap.put('T', 0);
         // S-P까지만
         int len = 0;
+
         for (int i = 0; i < S; i++) {
-            if (str.charAt(i) == 'A' || str.charAt(i) == 'C' || str.charAt(i) == 'G'
-                    || str.charAt(i) == 'T') {
-                curMap.put(str.charAt(i), curMap.get(str.charAt(i)) + 1);
+            char c = str.charAt(i);
+            if (isDNA(c)) {
+                curMap.put(c, curMap.get(c) + 1);
                 len++;
             }
 
             if (len == P) {
                 boolean isOk = true;
                 for (Map.Entry<Character, Integer> entry : curMap.entrySet()) {
-                    char c = entry.getKey();
-                    if (originalMap.get(c) > entry.getValue()) {
+                    char key = entry.getKey();
+                    if (originalMap.get(key) > entry.getValue()) { // 조건 불만족
                         isOk = false;
                         break;
                     }
@@ -55,7 +55,7 @@ public class Main {
 
                 len -= 1;
                 int idx = i - (P - 1);
-                curMap.put(str.charAt(idx), curMap.get(str.charAt(idx)) - 1);
+                curMap.put(str.charAt(idx), curMap.get(str.charAt(idx)) - 1); // 감소시킴
             }
         }
 
@@ -64,5 +64,10 @@ public class Main {
         bw.flush();
         br.close();
         bw.close();
+    }
+
+    private static boolean isDNA(char c) {
+        if (c == 'A' || c == 'C' || c == 'G' || c == 'T') return true;
+        return false;
     }
 }

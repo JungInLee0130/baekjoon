@@ -59,13 +59,13 @@ public class Solution {
                     newLock[x + i][y + j] += Key[i][j];
                 }
                 else if (rot == 1){
-                    newLock[x + i][y + j] += Key[j][(len - 1) - i];
+                    newLock[x + i][y + j] += Key[(len - 1) - j][i];
                 }
                 else if (rot == 2){
                     newLock[x + i][y + j] += Key[(len - 1) - i][(len - 1) - j];
                 }
                 else{
-                    newLock[x + i][y + j] += Key[(len - 1) - j][i];
+                    newLock[x + i][y + j] += Key[j][(len - 1) - i];
                 }
             }
         }

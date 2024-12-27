@@ -3,7 +3,6 @@ import java.util.*;
 
 class Solution {
     static int[][] Points, Routes;
-    static Map<Integer, Point> pointMap = new HashMap<>();
 
     static class Point{
         int x;
@@ -14,18 +13,20 @@ class Solution {
         }
 
         @Override
-        public boolean equals(Object obj){
+        public boolean equals(Object obj) {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
-            Point point = (Point)obj;
+            Point point = (Point) obj;
             return x == point.x && y == point.y;
         }
 
         @Override
-        public int hashCode(){
-            return Objects.hash(x,y);
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
+
+    static int N;
 
     public int solution(int[][] points, int[][] routes) {
         Points = points;
@@ -36,83 +37,89 @@ class Solution {
         return cnt;
     }
 
-    static void setPointMap(int[][] points){
-        for (int i = 0; i < points.length; i++){
-            pointMap.put(i + 1, new Point(Points[i][0], Points[i][1]));
+    static void setN(){
+        int max = 0;
+        for (int i = 0; i < Points.length; i++){
+            for (int j = 0; j < 2; j++) {
+                max = Math.max(max, Points[i][j]);
+            }
         }
+
+        N = max;
     }
-
-
-    static List<List<Point>> shortestRoutes;
 
     static int solve(){
-        setPointMap(Points);
+        setN();
 
-        int longestRouteDist = 0;
-        shortestRoutes = new ArrayList<>();
+        routeList = new ArrayList<>();
 
-        for (int[] r : Routes){
-            List<Point> route = findShortestRoute(r);
-            shortestRoutes.add(route);
-            // 이건 그냥 루트 길이 저장하는 용도같은데
-            longestRouteDist = (longestRouteDist < route.size()) ? route.size() : longestRouteDist;
+        for (int i = 0; i < Routes.length; i++) {
+            routeList.add(new ArrayList<>());
+            for (int j = 0; j < Routes[i].length - 1; j++) {
+                move(Routes[i][j] - 1, Routes[i][j + 1] - 1, i);
+            }
         }
 
-        int answer = findStrikeCount(shortestRoutes, longestRouteDist);
+        for (int i = 0; i < routeList.size(); i++){
+            maxLen = Math.max(maxLen, routeList.get(i).size());
+        }
 
-        return answer;
+        int cnt = strikeCount();
+
+        return cnt;
     }
 
-    static List<Point> findShortestRoute(int[] routePoints){
-        List<Point> shortestRoute = new ArrayList<>();
+    static int maxLen = 0; // maxTime
 
-        for (int i = 1; i < routePoints.length; i++){
-            Point start = pointMap.get(routePoints[i - 1]);
-            Point end = pointMap.get(routePoints[i]);
+    static List<List<Point>> routeList;
 
-            int r = start.x;
-            int c = start.y;
+    static void move(int start, int end, int idx){
+        int startX = Points[start][0] - 1;
+        int startY = Points[start][1] - 1;
+        int endX = Points[end][0] - 1;
+        int endY = Points[end][1] - 1;
 
-            if (shortestRoute.isEmpty()){ // 맨 첫 점
-                shortestRoute.add(new Point(r,c));
-            }
+        List<Point> route = routeList.get(idx);
 
-            while (r != end.x){
-                r += (r > end.x) ? -1 : 1;
-                shortestRoute.add(new Point(r,c));
-            }
-
-            while (c != end.y){
-                c += (c > end.y) ? -1 : 1;
-                shortestRoute.add(new Point(r,c));
-            }
+        if (routeList.get(idx).size() == 0) {
+            route.add(new Point(startX, startY)); // 맨처음 좌표 대입 : t == 0일때임
         }
 
-        return shortestRoute;
+        if (startX == endX && startY == endY) { // 좌표 자기자신이면 그냥 return
+            return;
+        }
+
+        while (!(endX == startX)){
+            startX += (endX > startX) ? 1 : -1;
+            route.add(new Point(startX, startY));
+        }
+
+        while (!(endY == startY)){
+            startY += (endY > startY) ? 1 : -1;
+            route.add(new Point(startX, startY));
+        }
     }
 
-    static int findStrikeCount(List<List<Point>> shortestRoutes, int longestRouteDist){
-        int totalCount = 0;
+    static int strikeCount(){
+        int cnt = 0;
+        for (int j = 0; j < maxLen; j++) { // 시간
+            Map<Point, Integer> map = new HashMap<>(); // 시간마다 map 생성(카운트)
 
-        for (int i = 0; i < longestRouteDist; i++){
-            Map<Point, Integer> countMap = new HashMap<>();
-
-            for (List<Point> shortestRoute : shortestRoutes){
-                // 해당 시간에 해당하는 점이 있어야함.
-                Point point = (shortestRoute.size() > i) ? shortestRoute.get(i) : null;
-
-                if (point != null){
-                    countMap.put(point, countMap.getOrDefault(point, 0) + 1);
-                }
+            for (int i = 0; i < routeList.size(); i++) { // 루트
+                if (j >= routeList.get(i).size()) continue; // 루트끝에 도달하면 break
+                Point point = routeList.get(i).get(j);
+                map.put(point, map.getOrDefault(point, 0) + 1); // 위치마다 카운트 1씩 넣어줌
             }
 
-            for (int count : countMap.values()){
-                if (count > 1){
-                    totalCount += 1;
+            for (Map.Entry<Point, Integer> entry:map.entrySet()) {
+                if (entry.getValue() > 1) {
+                    cnt++;
                 }
             }
+            
         }
-        return totalCount;
+
+        return cnt;
     }
 
 

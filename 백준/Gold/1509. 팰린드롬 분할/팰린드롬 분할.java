@@ -38,8 +38,8 @@ public class Main {
     }
 
     private static void findAnswer() {
-        for (int i = 0; i < len; i++) {
-            for (int j = 0; j < len; j++){
+        for (int i = 0; i < len; i++) { // 바깥쪽
+            for (int j = 0; j <= i; j++){ // 안쪽
                 if (palindrome[j][i]) {
                     if (j == 0) {
                         dp[i] = 1;

@@ -24,7 +24,10 @@ public class Main {
 
         checkPalindrome();
 
-        Arrays.fill(dp, Integer.MAX_VALUE);
+        for (int i = 0; i < len; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        //Arrays.fill(dp, Integer.MAX_VALUE);
 
         findAnswer();
 
@@ -39,7 +42,7 @@ public class Main {
             for (int j = 0; j < len; j++){
                 if (palindrome[j][i]) {
                     if (j == 0) {
-                        dp[i] = Math.min(dp[i], 1);
+                        dp[i] = 1;
                     }
                     else{
                         dp[i] = Math.min(dp[i], dp[j - 1] + 1);

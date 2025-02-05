@@ -22,16 +22,17 @@ class Main {
         Arrays.sort(X);
 
         // 반지름 R * 2 : 전체길이로
-        int low = 0;
+        int low = 0; // 0이 맞음 조건에 딱히 자연수 조건도 없고
         int high = (X[N - 1] - X[0]) / 2;
 
-        int answer = high;
+        int answer = 1; // 최소 1개
 
         while (low <= high) {
             int mid = (low + high) / 2;
 
             int start = 0;
             int end = 0;
+            
             int count = 1;
 
             while (end <= N - 1) {

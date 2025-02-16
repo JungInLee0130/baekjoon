@@ -29,23 +29,19 @@ class Main {
         while (low <= high) {
             int mid = (low + high) / 2;
 
-            int left = 0;
+            int left = mid;
 
-            int count = 0;
+            int count = 1;
 
             for (int i = 0; i < N; i++) {
                 int m = money[i];
 
-                while (m > 0){
-                    if (left < m) {
-                        left = mid;
-                        count++; // 인출횟수 증가
-                    }
-                    else{ // left >= m
-                        left -= m;
-                        m = 0;
-                    }
+                if (left < m) {
+                    left = mid;
+                    count++; // 인출횟수 증가
                 }
+
+                left -= m;
             }
 
             if (count <= M) {

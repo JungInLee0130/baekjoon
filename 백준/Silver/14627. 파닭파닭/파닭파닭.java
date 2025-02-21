@@ -12,8 +12,7 @@ class Main {
 
         S = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
-
-        // C개에 같은 길이의 파를 넣고 남은 len의 합을 구하는 문제인듯.
+        
         long max = 0;
         len = new long[S];
         for (int i = 0; i < S; i++) {
@@ -27,7 +26,7 @@ class Main {
         long answer = 0;
 
         while (low <= high) {
-            long mid = (low + high) / 2; // 1 ~ 10억 // 10억 + 10억이면 안넘긴함.
+            long mid = (low + high) / 2;
 
             long count = getCount(mid);
 
@@ -40,27 +39,14 @@ class Main {
             }
         }
 
-        long leftLen = 0;
-
-        long count = getCount(answer);
-
+        long sum = 0;
         for (int i = 0; i < S; i++) {
-            leftLen += len[i] % answer;
+            sum += len[i];
         }
 
-        if (count == C){
-
-        }
-        else{
-            while (count > C) {
-                leftLen += answer;
-                count--;
-            }
-        }
-
+        long leftLen = sum - answer * C;
 
         System.out.println(leftLen);
-
 
         br.close();
     }
@@ -69,7 +55,7 @@ class Main {
         long count = 0;
 
         for (int i = 0; i < S; i++) {
-            count += len[i] / mid; // 개수가 C개여야함 그중 최대 // 많은 양의 파를 넣기때문에
+            count += len[i] / mid;
         }
 
         return count;

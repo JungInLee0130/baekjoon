@@ -121,18 +121,24 @@ class Main {
             this.c = c;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Cloud cloud = (Cloud) o;
-            return r == cloud.r && c == cloud.c;
-        }
+		@Override
+		public int hashCode() {
+			return Objects.hash(c, r);
+		}
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(r, c);
-        }
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Cloud other = (Cloud) obj;
+			return c == other.c && r == other.r;
+		}
+
+        
     }
 
     // 1. move

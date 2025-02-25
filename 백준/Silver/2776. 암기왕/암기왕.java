@@ -13,10 +13,12 @@ class Main {
 
             StringTokenizer st = new StringTokenizer(br.readLine());
 
-            Set<Integer> noteset1 = new HashSet<>();
+            int[] note = new int[N];
             for (int i = 0; i < N; i++) {
-                noteset1.add(Integer.parseInt(st.nextToken()));
+                note[i] = Integer.parseInt(st.nextToken());
             }
+
+            Arrays.sort(note);
 
             M = Integer.parseInt(br.readLine());
 
@@ -27,7 +29,26 @@ class Main {
             for (int i = 0; i < M; i++){
                 int m = Integer.parseInt(st.nextToken());
 
-                if (noteset1.contains(m)) {
+                int left = 0;
+                int right = N - 1;
+
+                boolean hasNumber = false;
+                while (left <= right){
+                    int mid = (left + right) / 2;
+
+                    if (note[mid] < m){
+                        left = mid + 1;
+                    }
+                    else if (m < note[mid]){
+                        right = mid - 1;
+                    }
+                    else{
+                        hasNumber = true;
+                        break;
+                    }
+                }
+
+                if (hasNumber){
                     sb.append(1 + "\n");
                 }
                 else{
@@ -35,9 +56,8 @@ class Main {
                 }
             }
 
-            System.out.print(sb);
+            System.out.print(sb); // \n넣으면 안됨.
         }
-
 
         br.close();
     }

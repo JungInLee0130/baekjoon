@@ -28,20 +28,17 @@ class Main {
 
         int sum = 0;
 
+        // 중복되고 불편하고 같은거 그냥 묶어버림
         int MAX = 2 * K;
-
-        for (int i = 0; i <= Math.min(MAX, 1_000_000); i++) {
+        // 0 ~ 1_000_000 // 범위가 문제. 잘지키셈.
+        for (int i = 0; i <= Math.min(MAX, MAX_SIZE); i++) {
             sum += G[i];
         }
 
         int answer = sum;
 
-        int SIZE = 2 * K;
-
-        for (int i = 1; i <= 1_000_000 - SIZE; i++) {
-            sum -= G[i - 1];
-            sum += G[i + SIZE];
-            if (i + SIZE > max) break;
+        for (int i = 1; i <= MAX_SIZE - MAX; i++) {
+            sum = sum - G[i - 1] + G[i + MAX];
             answer = Math.max(answer, sum);
         }
 

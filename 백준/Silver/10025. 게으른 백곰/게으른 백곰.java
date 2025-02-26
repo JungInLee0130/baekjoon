@@ -15,6 +15,7 @@ class Main {
         }
     }
     static Ice[] ices;
+    static final int MAX_SIZE = 1_000_000;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -24,63 +25,50 @@ class Main {
         K = Integer.parseInt(st.nextToken());
 
         int max = 0;
-        ices = new Ice[N];
+        G = new int[MAX_SIZE + 1];
+        boolean[] hasValue = new boolean[MAX_SIZE + 1];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
 
             int g = Integer.parseInt(st.nextToken());
             int x = Integer.parseInt(st.nextToken());
 
-            ices[i] = new Ice(g, x);
+            G[x] = g;
+            hasValue[x] = true;
             max = Math.max(max, x);
-        }
-
-        Arrays.sort(ices, new Comparator<Ice>() {
-            @Override
-            public int compare(Ice o1, Ice o2) {
-                return o1.x - o2.x;
-            }
-        });
-
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < N; i++) {
-            map.put(ices[i].x, ices[i].g);
         }
 
         int left = 0;
         int right = 2 * K;
 
-        int answer = 0;
-
-        for (int i = 0; i < N; i++) {
-            if (0 <= ices[i].x && ices[i].x <= 2 * K) {
-                answer += ices[i].g;
-            }
+        int sum = 0;
+        for (int i = 0; i < 2 * K + 1; i++) {
+            if (i > MAX_SIZE) break;
+            if (hasValue[i]) sum += G[i];
         }
 
-        int count = answer;
+        int answer = sum;
 
         while (left - 1 <= max && right - 1 <= max){
             int sub = right - left;
 
             if (sub < 2 * K) {
-                if (map.containsKey(right + 1)){
-                    count += map.get(right + 1);
+                if (hasValue[right + 1]){
+                    sum += G[right + 1];
                 }
                 right += 1;
             } else if (sub > 2 * K) {
-                if (map.containsKey(left)){
-                    count -= map.get(left);
+                if (hasValue[left]){
+                    sum -= G[left];
                 }
                 left += 1;
             }
 
             if (sub == 2 * K){
-                answer = Math.max(count, answer);
+                answer = Math.max(sum, answer);
 
-                if (map.containsKey(left)){
-                    count -= map.get(left);
+                if (hasValue[left]){
+                    sum -= G[left];
                 }
 
                 left += 1;
@@ -91,9 +79,5 @@ class Main {
 
 
         br.close();
-    }
-
-    private static int getCount(int left, int right, int answer) {
-        return answer;
     }
 }

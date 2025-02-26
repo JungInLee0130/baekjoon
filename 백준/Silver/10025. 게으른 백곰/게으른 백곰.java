@@ -4,17 +4,6 @@ import java.util.*;
 class Main {
     static int N, K;
     static int[] G;
-    static int[] X;
-    static class Ice{
-        int g;
-        int x;
-
-        public Ice(int g, int x) {
-            this.g = g;
-            this.x = x;
-        }
-    }
-    static Ice[] ices;
     static final int MAX_SIZE = 1_000_000;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,7 +15,6 @@ class Main {
 
         int max = 0;
         G = new int[MAX_SIZE + 1];
-        boolean[] hasValue = new boolean[MAX_SIZE + 1];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
 
@@ -34,49 +22,30 @@ class Main {
             int x = Integer.parseInt(st.nextToken());
 
             G[x] = g;
-            hasValue[x] = true;
             max = Math.max(max, x);
         }
 
-        int left = 0;
-        int right = 2 * K;
 
         int sum = 0;
-        for (int i = 0; i < 2 * K + 1; i++) {
-            if (i > MAX_SIZE) break;
-            if (hasValue[i]) sum += G[i];
+
+        int MAX = 2 * K;
+
+        for (int i = 0; i <= Math.min(MAX, 1_000_000); i++) {
+            sum += G[i];
         }
 
         int answer = sum;
 
-        while (left - 1 <= max && right - 1 <= max){
-            int sub = right - left;
+        int SIZE = 2 * K;
 
-            if (sub < 2 * K) {
-                if (hasValue[right + 1]){
-                    sum += G[right + 1];
-                }
-                right += 1;
-            } else if (sub > 2 * K) {
-                if (hasValue[left]){
-                    sum -= G[left];
-                }
-                left += 1;
-            }
-
-            if (sub == 2 * K){
-                answer = Math.max(sum, answer);
-
-                if (hasValue[left]){
-                    sum -= G[left];
-                }
-
-                left += 1;
-            }
+        for (int i = 1; i <= 1_000_000 - SIZE; i++) {
+            sum -= G[i - 1];
+            sum += G[i + SIZE];
+            if (i + SIZE > max) break;
+            answer = Math.max(answer, sum);
         }
 
         System.out.println(answer);
-
 
         br.close();
     }

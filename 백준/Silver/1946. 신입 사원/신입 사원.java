@@ -35,7 +35,6 @@ class Main {
             }
 
             Rank[] rankOne = Arrays.copyOf(ranks, N);
-            Rank[] rankTwo = Arrays.copyOf(ranks, N);
 
             Arrays.sort(rankOne, new Comparator<Rank>(){
                 @Override
@@ -44,38 +43,18 @@ class Main {
                 }
             });
 
-            /*for (int i = 0; i < N; i++) {
-                System.out.print(rankOne[i].a + " ");
-            }
-            System.out.println();*/
-
-            Arrays.sort(rankTwo, new Comparator<Rank>(){
-                @Override
-                public int compare(Rank r1, Rank r2){
-                    return r1.b - r2.b; // 순위b 오름차순
-                }
-            });
-
-            /*for (int i = 0; i < N; i++) {
-                System.out.print(rankOne[i].a + " ");
-            }
-            System.out.println();*/
-
-            boolean[] isPossible = new boolean[N]; // 0 ~ N
-            
+            int count = 1;
             int min = rankOne[0].b;
 
             for (int i = 1; i < N; i++) {
                 Rank cur = rankOne[i];
-                if (min > cur.b){
-                    min = rankOne[i].b;
-                    isPossible[cur.num] = true;
-                }
-            }
 
-            int count = 1;
-            for (int i = 0; i < N; i++) {
-                if (isPossible[i]) count++;
+                if (min > cur.b){
+                    count++;
+                    min = rankOne[i].b; // b 최소등수 갱신. 이거보다 작은(등수가 높은)게 있으면 해당됨.
+                    // a는 어짜피 오름차순이라 이거보다 순위가 낮음. 그럼 b라도 순위가 높아야하는데
+                    // 그게 있을때마다 최솟값을 갱신해주면 개수를 알수있음.
+                }
             }
 
             sb.append(count + "\n");

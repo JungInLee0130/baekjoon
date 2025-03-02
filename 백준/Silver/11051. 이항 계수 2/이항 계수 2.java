@@ -16,11 +16,11 @@ class Main {
 
         // nCk = n-1Ck-1 + n-1Ck
         // func : 재귀
-        //int res = func(N, K);
+        dp = new int[N + 1][K + 1];
 
-        int[][] dp = new int[N + 1][K + 1];
+        int res = func(N, K);
 
-        for (int i = 0; i <= N; i++) { // 1000
+        /*for (int i = 0; i <= N; i++) { // 1000
             for (int j = 0; j <= K; j++) { // 1000
                 if (i < j){
                     break;
@@ -38,19 +38,28 @@ class Main {
                     continue;
                 }
             }
-        }
+        }*/
 
-        System.out.println(dp[N][K]);
+        //System.out.println(dp[N][K]);
 
-        //System.out.println(res);
+        System.out.println(res);
 
 
         br.close();
     }
 
+    static int[][] dp;
     private static int func(int n, int k) {
-        if (n == k) return 1;
-        if (k == 1) return n;
-        return func(n - 1, k - 1) + func(n - 1, k);
+        if (dp[n][k] > 0) return dp[n][k];
+
+        if (n == k || k == 0) {
+            dp[n][k] = 1;
+            return dp[n][k];
+        }
+        if (k == 1) {
+            dp[n][k] = n;
+            return dp[n][k];
+        }
+        return dp[n][k] = (func(n - 1, k - 1) % S + func(n - 1, k) % S) % S;
     }
 }

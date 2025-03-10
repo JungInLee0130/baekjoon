@@ -47,9 +47,12 @@ class Main {
             pq.add(student);
         }
 
+        StringBuilder sb = new StringBuilder();
         while (!pq.isEmpty()){
-            System.out.println(pq.poll().name);
+            sb.append(pq.poll().name + "\n");
         }
+
+        System.out.println(sb);
 
         br.close();
     }

@@ -3,7 +3,7 @@ import java.util.*;
 
 class Main {
     static int N;
-    static class Student{
+    static class Student implements Comparable<Student>{
         String name;
         int kor;
         int eng;
@@ -15,40 +15,40 @@ class Main {
             this.eng = eng;
             this.math = math;
         }
+
+        @Override
+        public int compareTo(Student s){
+            if (this.kor == s.kor){
+                if (this.eng == s.eng){
+                    if (this.math == s.math){
+                        return this.name.compareTo(s.name);
+                    }
+                    return s.math - this.math;
+                }
+                return this.eng - s.eng;
+            }
+            return s.kor - this.kor;
+        }
     }
-    static Student[] students;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
 
-        students = new Student[N];
+        PriorityQueue<Student> pq = new PriorityQueue<>();
+
         for (int i = 0; i < N; i++) {
             String[] sp = br.readLine().split(" ");
 
-            students[i] = new Student(sp[0], Integer.parseInt(sp[1]),
+            Student student = new Student(sp[0], Integer.parseInt(sp[1]),
                     Integer.parseInt(sp[2]),
                     Integer.parseInt(sp[3]));
+
+            pq.add(student);
         }
 
-        Arrays.sort(students, new Comparator<Student>(){
-            @Override
-            public int compare(Student s1, Student s2){
-                if (s1.kor == s2.kor){
-                    if (s1.eng == s2.eng){
-                        if (s1.math == s2.math){
-                            return s1.name.compareTo(s2.name);
-                        }
-                        return s2.math - s1.math;
-                    }
-                    return s1.eng - s2.eng;
-                }
-                return s2.kor - s1.kor;
-            }
-        });
-
-        for (Student s : students){
-            System.out.println(s.name);
+        while (!pq.isEmpty()){
+            System.out.println(pq.poll().name);
         }
 
         br.close();

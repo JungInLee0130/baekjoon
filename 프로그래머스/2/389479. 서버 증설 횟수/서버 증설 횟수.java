@@ -23,18 +23,19 @@ class Solution {
         for (int i = 0; i < 24; i++) {
             // 시간별 반복
             if (players[i] >= m) {
-                int server = players[i] / m;            // 증설된 서버 수            
-                int count = 0;
-                if (server - pq.size() > 0){
-                    count += server - pq.size();        // 증설횟수 : server - pq 사이즈
+                int server = players[i] / m;            // 증설된 서버 수 
+                
+                int count = server - pq.size();
+                if (count > 0){
+                    result += count;      // 증설횟수 : server - pq 사이즈
+                    
                     for (int j = 0; j < count; j++) {
-                        pq.add(new Server(i, i + k));    
+                        pq.add(new Server(i, i + k - 1));    
                     }
-                    result += count;
                 }
             }
             
-            while (!pq.isEmpty() && pq.peek().end - 1 == i) {
+            while (!pq.isEmpty() && pq.peek().end == i) {
                 // 서버 제거 로직 : pq에 원소가 있고 && 종료시간이면
                 pq.poll();                                      // poll    
             }

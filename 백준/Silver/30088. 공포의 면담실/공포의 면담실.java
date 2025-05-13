@@ -28,7 +28,7 @@ class Main {
             preSum[i] = preSum[i - 1] + times[i];
         }
 
-        int sum = 0;
+        long sum = 0;
         for (int i = 0; i < N; i++) {
             sum += preSum[i];
         }

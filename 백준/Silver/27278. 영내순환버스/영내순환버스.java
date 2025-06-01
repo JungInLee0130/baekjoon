@@ -50,11 +50,9 @@ class Main {
                 }*/
             }
 
-            if (e > s) {
+            if (e >= s) {
                 lastTime[i] = firstTime[i] + preSum[e] - preSum[s];
-            } else if (s > e && e == 0) {
-                lastTime[i] = firstTime[i] + (preSum[N]) - preSum[s];
-            } else {
+            } else if (s > e) {
                 lastTime[i] = firstTime[i] + (preSum[N] - preSum[s]) + preSum[e];
             }
         }

@@ -48,7 +48,8 @@ class Main {
             idx[i] = right;
         }
 
-        System.out.println(len);
+        StringBuilder sb = new StringBuilder();
+        sb.append(len + "\n");
 
         int index = len - 1;
         Stack<Integer> stack = new Stack<>();
@@ -62,8 +63,10 @@ class Main {
             }
         }
         while (!stack.isEmpty()) {
-            System.out.print(stack.pop() + " ");
+            sb.append(stack.pop() + " ");
         }
+
+        System.out.println(sb);;
 
         br.close();
     }

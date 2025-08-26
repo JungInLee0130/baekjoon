@@ -77,15 +77,7 @@ public class Main {
             replicateStart();
 
             // 2. 물고기의 이동
-            fishMove();     // 이동에 문제
-            /*System.out.println("----------smell----------");    // 현재 지나간데 모두 smell 표시
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    System.out.print(smell[i][j] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println("-------------------------");*/
+            fishMove();
 
             // 3. 상어의 이동
             getSharkDir();
@@ -103,7 +95,6 @@ public class Main {
 
         // 모든 물고기의 수는?
         int total = getFishCount();
-        //print();
 
         System.out.println(total);
 
@@ -260,27 +251,6 @@ public class Main {
         shark.y = sy;
     }
 
-    private static int fishDirToSharkDir(int fishDir) {
-        if (fishDir == 2) return 0;
-        if (fishDir == 0) return 1;
-        if (fishDir == 6) return 2;
-        if (fishDir == 4) return 3;
-
-        return -1;
-    }
-
-    private static int sharkDirToFishDir(int sharkDir) {
-        // 상 좌 하 우
-        // 2 0 6 4
-        // 0 1 2 3
-        if (sharkDir == 0) return 2;
-        if (sharkDir == 1) return 0;
-        if (sharkDir == 2) return 6;
-        if (sharkDir == 3) return 4;
-
-        return -1;
-    }
-
     static int turn;
 
     // 시뮬 -> dfs
@@ -292,7 +262,6 @@ public class Main {
         maxFishCount = -1;
         maxDir = "";
         dfs(x, y, maxDir, 0, count);
-
 
         return maxDir;
     }
@@ -360,7 +329,6 @@ public class Main {
     }
 
     static Shark shark;
-
 
     private static void print() {
         int N = 4;

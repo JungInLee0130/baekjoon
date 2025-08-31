@@ -38,7 +38,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         fishes = new Fish[4][4];
-        // 번호 순서로 오름차순
+
         for (int r = 0; r < 4; r++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -46,23 +46,21 @@ public class Main {
                 int num = Integer.parseInt(st.nextToken());
                 int d = Integer.parseInt(st.nextToken()) - 1;
 
-                // r,c num, d
                 Fish fish = new Fish(num, r, c, d);
 
-                fishes[r][c] = fish;    // fish 위치들 기록
+                fishes[r][c] = fish;
             }
         }
 
         count = 0;
 
         // 1. 청소년 상어 투입
-        // (0,0)에 투입
-        // (0,0) 물고기를 먹고, 그 방향을 가짐
         Fish fish = fishes[0][0];
         shark = new Shark(0,0, fish.d);
         fishes[0][0] = null;
         count += fish.num;
 
+        // 근본적으로 2,3 부터 dfs를 반복
         dfs();
 
         System.out.println(maxCount);
@@ -86,40 +84,26 @@ public class Main {
         int num = curFish.num;
         int x = curFish.x;
         int y = curFish.y;
-        int d = curFish.d;
 
         int nx = x;
         int ny = y;
 
-        // 이동할수있으면 > 0 방향 반환
         int nd = getDir(curFish);
 
-        // 이동할수있으면 : 이동
-        // 빈칸 -> 그냥 이동
-        // 물고기있으면 -> 위치 교환
-        if (nd > -1) {
+        if (nd >= 0) {
             nx = x + dx8[nd];
             ny = y + dy8[nd];
 
             Fish fish = new Fish(num, nx, ny, nd);
 
-            // 물고기가 없음 -> 그냥 이동
             if (fishes[nx][ny] == null) {
                 fishes[nx][ny] = fish;
                 fishes[x][y] = null;
-            }
-            // 물고기가 있음 -> 교환
-            else{
-                Fish prevFish = new Fish(fishes[nx][ny].num, x, y, fishes[nx][ny].d);
+            } else {
+                Fish exchangeFish = new Fish(fishes[nx][ny].num, x, y, fishes[nx][ny].d);
                 fishes[nx][ny] = fish;
-                fishes[x][y] = prevFish;
+                fishes[x][y] = exchangeFish;
             }
-            // updateFish에 대입
-
-        }
-        // 이동할수없으면 그냥 정지
-        else {
-
         }
     }
 
@@ -129,13 +113,14 @@ public class Main {
 
     private static void dfs() {
         // 2. 물고기의 이동
-        Fish[][] prevFishes = copyFish();
-        for (int k = 1; k <= 16; k++) {
+        Fish[][] prevFishes = copyFish();   // 이동전 사진을 찍음
+        for (int k = 1; k <= 16; k++) {     // 예제 3,4 틀린것 : 범위 실수
             Fish fish = getFish(k);
             if (fish != null) {
                 moveFish(fish);
             }
         }
+
         // 3. 상어의 이동 : 브루트포스 완전탐색
         int sharkX = shark.x;
         int sharkY = shark.y;
@@ -165,11 +150,10 @@ public class Main {
             shark = new Shark(sharkX, sharkY, sharkDir);
         }
 
-        if (maxCount < count) {
-            maxCount = count;
-        }
+        // 이동을 못함 : maxCount 비교
+        maxCount = Math.max(maxCount, count);
 
-        fishes = prevFishes;
+        fishes = prevFishes;        // 이동전으로 복귀
     }
 
     private static Fish[][] copyFish() {
@@ -191,12 +175,10 @@ public class Main {
             int nx = r + dx8[d];
             int ny = c + dy8[d];
 
-            // 경계밖이거나 상어가있다면 : 반시계 회전
             if (isOut(nx,ny)
                     || (shark.x == nx && shark.y == ny)) {
-                d = (d + 1) % 8;    // 0 ~ 7 사이로 회전
+                d = (d + 1) % 8;
             }
-            // 이동 가능하면
             else {
                 return d;
             }
@@ -206,7 +188,7 @@ public class Main {
     }
 
     private static boolean isOut(int nx, int ny) {
-        return 0 > nx || nx > 3 || 0 > ny || ny > 3;
+        return 0 > nx || nx > 3 || 0 > ny || ny > 3;        // 여기서 범위 실수
     }
 
     private static void print() {

@@ -1,6 +1,6 @@
-import java.io.*;
-import java.nio.Buffer;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
 
@@ -12,61 +12,77 @@ public class Main {
 
         getSnail();
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                System.out.print(map[i][j] + " ");
+                if (value == map[i][j]) {
+                    valuePoint = new Point(i + 1, j + 1);
+                }
+                sb.append(map[i][j] + " ");
             }
-            System.out.println();
+            sb.append("\n");
         }
 
-        System.out.println(tx + " " + ty);
+        System.out.print(sb.toString());
+        System.out.print(valuePoint.x + " " + valuePoint.y);
 
         br.close();
     }
 
     static int N, value;
     static int[][] map;
-    static int tx, ty;
+    static Point valuePoint;
+    static class Point {
+        int x;
+        int y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
     private static void getSnail() {
-        int num = 1;    // 넣을 숫자
-        int move = 1;   // 이동할수있는 수
-        int[] dx = {-1, 0, 1, 0};   // rotate 순서
-        int[] dy = {0, 1, 0, -1};
-        int sx = N / 2; // 초기좌표 x
-        int sy = N / 2; // 초기좌표 y 
-        int d = 0;      // 방향
-        int rotateCount = 0;    // 방향 바꾼횟수가 2번 이상이면 한칸 더 늘어남.
         map = new int[N][N];
 
-        map[sx][sy] = num;  // 처음부터 1 넣고 시작
-        tx = sx + 1;
-        ty = sy + 1;
-        num += 1;
+        int count = N * N;
 
-        while (num <= N * N) {
-            for (int i = 1; i <= move; i++) {
-                int nx = sx + dx[d];
-                int ny = sy + dy[d];
+        int[] dx = {1, 0, -1, 0};   // rotate 순서
+        int[] dy = {0, 1, 0, -1};
 
-                //print();
+        int d = 0;      // 방향
 
-                map[nx][ny] = num;
-                if (num == value){
-                    tx = nx + 1;    // 실제좌표 : +1
-                    ty = ny + 1;
-                }
-                num += 1;
-                if (num > N * N) return;
-                sx = nx;    // 좌표 갱신
-                sy = ny;    
+        int sx = 0;     // 초기 좌표
+        int sy = 0;
+        map[sx][sy] = count;
+        count -= 1;
+
+        while (count > 0) {
+            int nx = sx + dx[d];
+            int ny = sy + dy[d];
+
+            // 범위가 아니면
+            if (!isRange(nx,ny) || encounterValue(nx,ny)) {
+                d = (d + 1) % 4;
+                continue;
             }
-            d = (d + 1) % 4;
-            rotateCount += 1;
-            if (rotateCount >= 2) {
-                move += 1;          // 한칸 더 갈수있고
-                rotateCount = 0;    // 방향 바꾼횟수 초기화
-            }
+
+            map[nx][ny] = count;
+            count -= 1;
+
+            sx = nx;
+            sy = ny;
         }
+    }
+
+    private static boolean encounterValue(int nx, int ny) {
+        if (map[nx][ny] > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isRange(int nx, int ny) {
+        return 0 <= nx && nx <= N - 1 && 0 <= ny && ny <= N - 1;
     }
 
     private static void print() {

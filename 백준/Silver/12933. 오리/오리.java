@@ -9,45 +9,38 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String sound = br.readLine();
-        
+
         if (sound.length() % 5 != 0) {
             System.out.println(-1);
             return;
         }
 
-        int len = sound.length();
         int count = 0;
 
-        boolean[] visited = new boolean[len];
+        boolean[] visited = new boolean[sound.length()];
         char[] letters = {'q', 'u', 'a', 'c', 'k'};
         int letterIdx = 0;
 
-        List<Integer> qIndex = new ArrayList<>();
-        for (int i = 0; i < len; i++) {
-            if (sound.charAt(i) == 'q') {
-                qIndex.add(i);
-            }
-        }
-
-        for (int i = 0; i < qIndex.size(); i++)
-        {
-            int index = qIndex.get(i);
-            letterIdx = 0;
-            boolean isDuck = false;
-            for (int j = index; j < sound.length(); j++) {
-                if (sound.charAt(j) == letters[letterIdx]) {
-                    if (visited[j]) continue;
-                    visited[j] = true;
-                    letterIdx += 1;
-                    if (letterIdx >= 5) {
-                        isDuck = true;
-                        letterIdx = letterIdx % 5;
+        for (int k = 0; k < sound.length(); k++) {  // 2500
+            if (sound.charAt(k) == 'q') {
+                letterIdx = 0;
+                boolean isDuck = false;
+                // q 시작점부터 끝까지
+                for (int j = k; j < sound.length(); j++) { // 2500
+                    if (sound.charAt(j) == letters[letterIdx]) {
+                        if (visited[j]) continue;
+                        visited[j] = true;
+                        letterIdx += 1;
+                        if (letterIdx >= 5) {
+                            isDuck = true;
+                            letterIdx = letterIdx % 5;
+                        }
                     }
                 }
-            }
-            if (isDuck) {
-                count += 1;
-                isDuck = false;
+                if (isDuck && letterIdx == 0) {
+                    count += 1;
+                    isDuck = false;
+                }
             }
         }
 

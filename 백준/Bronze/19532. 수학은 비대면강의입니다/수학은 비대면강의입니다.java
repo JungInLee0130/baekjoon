@@ -1,8 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException{
@@ -17,19 +16,21 @@ public class Main {
         int e = Integer.parseInt(st.nextToken());
         int f = Integer.parseInt(st.nextToken());
 
-        int resultX = 0;
-        int resultY = 0;
+        int upsideX = (c * e - f * b);
+        int upsideY = (a * f - c * d);
+        int downside = (a * e - b * d);
 
-        for (int x = -999; x <= 999; x++) {
-            for (int y = -999; y <= 999; y++) {
-                if (a * x + b * y == c && d * x + e * y == f) {
-                    resultX = x;
-                    resultY = y;
-                    System.out.println(resultX + " " + resultY);
-                    return;
-                }
-            }
+        if (downside == 0 || upsideX % downside != 0 || upsideY % downside != 0) {
+            System.out.println(-1);
+            return;
         }
+
+        int x = upsideX / downside;
+        int y = upsideY / downside;
+
+
+        System.out.println(x + " " + y);
+
 
         br.close();
     }

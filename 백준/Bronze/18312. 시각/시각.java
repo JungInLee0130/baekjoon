@@ -14,33 +14,33 @@ public class Main {
 
         // 24 * 60 * 60 = 86400
         int hourCount = N + 1; // 0 더해서
-        for (int i = 0; i <= N; i++) {
-            int ten = i / 10;
-            int one = i % 10;
-
-            if (ten == K || one == K) {
-                hourCount -= 1;
-            }
-        }
+        int hoursWithoutK = getCount(N, hourCount);
 
         int minuteCount = 60;
-        for (int i = 0; i <= 59; i++) {
-            int ten = i / 10;
-            int one = i % 10;
+        int minutesWithoutK = getCount(59, minuteCount);
 
-            if (ten == K || one == K) {
-                minuteCount -= 1;
-            }
-        }
+        int secondCount = 60;
+        int secondsWithoutK = minutesWithoutK;
 
-        int secondCount = minuteCount;
-
-        int leftCount = hourCount * minuteCount * secondCount;
-        int totalCount = (N + 1) * 60 * 60;
+        long totalCount = (long) hourCount * minuteCount * secondCount;
+        long leftCount = (long) hoursWithoutK * minutesWithoutK * secondsWithoutK;
 
         System.out.println(totalCount - leftCount);
 
         br.close();
     }
+
+    private static int getCount(int N, int count) {
+        for (int i = 0; i <= N; i++) {
+            int ten = i / 10;
+            int one = i % 10;
+
+            if (ten == K || one == K) {
+                count -= 1;
+            }
+        }
+        return count;
+    }
+
     static int N, K;
 }

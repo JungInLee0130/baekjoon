@@ -12,39 +12,35 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        getCount();
+        // 24 * 60 * 60 = 86400
+        int hourCount = N + 1; // 0 더해서
+        for (int i = 0; i <= N; i++) {
+            int ten = i / 10;
+            int one = i % 10;
 
-
-        br.close();
-    }
-
-    private static void getCount() {
-        int hourCount = N;
-        hourCount = getCount(hourCount + 1, hourCount + 1);
+            if (ten == K || one == K) {
+                hourCount -= 1;
+            }
+        }
 
         int minuteCount = 60;
-        minuteCount = getCount(minuteCount, minuteCount);
+        for (int i = 0; i <= 59; i++) {
+            int ten = i / 10;
+            int one = i % 10;
+
+            if (ten == K || one == K) {
+                minuteCount -= 1;
+            }
+        }
 
         int secondCount = minuteCount;
 
-        int totalCount = (N + 1) * 60 * 60;
         int leftCount = hourCount * minuteCount * secondCount;
+        int totalCount = (N + 1) * 60 * 60;
 
         System.out.println(totalCount - leftCount);
-    }
 
-    private static int getCount(int time, int totalCount) {
-        for (int h = 0; h < time; h++) {
-            String value = String.format("%02d", h);
-            for (int i = 0; i < value.length(); i++) {
-                if (value.charAt(i) - '0' == K) {
-                    totalCount -= 1;
-                    break;
-                }
-            }
-        }
-        return totalCount;
+        br.close();
     }
-
     static int N, K;
 }
